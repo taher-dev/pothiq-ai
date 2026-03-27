@@ -50,6 +50,53 @@ export const SEED_STOPS: Omit<Stop, 'id' | 'created_at'>[] = [
   { name_en: 'Bijoy Sarani', name_bn: 'বিজয় সরণি', area: 'Dhaka Central', lat: 23.7663, lng: 90.3893 },
   { name_en: 'Khilgaon', name_bn: 'খিলগাঁও', area: 'East Dhaka', lat: 23.7450, lng: 90.4300 },
   { name_en: 'Malibagh', name_bn: 'মালিবাগ', area: 'East Dhaka', lat: 23.7490, lng: 90.4170 },
+  { name_en: 'Postogola', name_bn: 'পোস্তগোলা', area: 'South Dhaka', lat: 23.6875, lng: 90.4347 },
+  { name_en: 'Signboard', name_bn: 'সাইনবোর্ড', area: 'Narayanganj', lat: 23.6931, lng: 90.4851 },
+  { name_en: 'Shanir Akhra', name_bn: 'শনির আখড়া', area: 'South Dhaka', lat: 23.7012, lng: 90.4503 },
+  { name_en: 'Rayerbag', name_bn: 'রায়েরবাগ', area: 'South Dhaka', lat: 23.6975, lng: 90.4612 },
+  { name_en: 'Kanchpur', name_bn: 'কাঁচপুর', area: 'Narayanganj', lat: 23.6997, lng: 90.5259 },
+  { name_en: 'Bishwa Road', name_bn: 'বিশ্বরোড', area: 'Kuril', lat: 23.8182, lng: 90.4194 },
+  { name_en: 'Bashundhara', name_bn: 'বসুন্ধরা', area: 'Bashundhara', lat: 23.8124, lng: 90.4230 },
+  { name_en: 'Nadda', name_bn: 'নদ্দা', area: 'Gulshan', lat: 23.8055, lng: 90.4231 },
+  { name_en: 'Kuril', name_bn: 'কুড়িল', area: 'Kuril', lat: 23.8188, lng: 90.4144 },
+  { name_en: 'Gabtoli', name_bn: 'গাবতলী', area: 'Gabtoli', lat: 23.7844, lng: 90.3344 },
+  { name_en: 'Dholairpar', name_bn: 'ধলাইড়পাড়', area: 'South Dhaka', lat: 23.6922, lng: 90.4322 },
+  { name_en: 'Janapoth Moor', name_bn: 'জনপথ মোড়', area: 'South Dhaka', lat: 23.7052, lng: 90.4367 },
+  { name_en: 'Mugda', name_bn: 'মুগদা', area: 'East Dhaka', lat: 23.7255, lng: 90.4389 },
+  { name_en: 'Bashabo', name_bn: 'বাসাবো', area: 'East Dhaka', lat: 23.7371, lng: 90.4355 },
+  { name_en: 'Malibagh Railgate', name_bn: 'মালিবাগ রেলগেট', area: 'East Dhaka', lat: 23.7511, lng: 90.4199 },
+  { name_en: 'Rampura Bazar', name_bn: 'রামপুরা বাজার', area: 'Rampura', lat: 23.7612, lng: 90.4212 },
+  { name_en: 'Rampura Bridge', name_bn: 'রামপুরা ব্রিজ', area: 'Rampura', lat: 23.7688, lng: 90.4255 },
+  { name_en: 'Merul Badda', name_bn: 'মেরুল বাড্ডা', area: 'Badda', lat: 23.7755, lng: 90.4266 },
+  { name_en: 'Uttar Badda', name_bn: 'উত্তর বাড্ডা', area: 'Badda', lat: 23.7852, lng: 90.4288 },
+  { name_en: 'Bashtola', name_bn: 'বাঁশতলা', area: 'Badda', lat: 23.7911, lng: 90.4255 },
+  { name_en: 'Jamuna Future Park', name_bn: 'যমুনা ফিউচার পার্ক', area: 'Kuril', lat: 23.8133, lng: 90.4233 },
+  { name_en: 'Kuril Chourasta', name_bn: 'কুড়িল চৌরাস্তা', area: 'Kuril', lat: 23.8155, lng: 90.4188 },
+  { name_en: 'Khilkhet', name_bn: 'খিলক্ষেত', area: 'Uttara', lat: 23.8299, lng: 90.4177 },
+  { name_en: 'Jashimuddin', name_bn: 'জসিমউদ্দিন', area: 'Uttara', lat: 23.8611, lng: 90.4011 },
+  { name_en: 'Rajlakshmi', name_bn: 'রাজলক্ষ্মী', area: 'Uttara', lat: 23.8655, lng: 90.3988 },
+  { name_en: 'Azampur', name_bn: 'আজম্পুর', area: 'Uttara', lat: 23.8711, lng: 90.3944 },
+  { name_en: 'House Building', name_bn: 'হাউজ বিল্ডিং', area: 'Uttara', lat: 23.8755, lng: 90.3888 },
+  { name_en: 'Dia Bari', name_bn: 'দিয়া বাড়ি', area: 'Uttara', lat: 23.8822, lng: 90.3655 },
+  { name_en: 'Notun Bazar', name_bn: 'নতুন বাজার', area: 'Badda', lat: 23.7977, lng: 90.4233 },
+  { name_en: 'Malibaag Moor', name_bn: 'মালিবাগ মোড়', area: 'East Dhaka', lat: 23.7480, lng: 90.4130 },
+  { name_en: 'Manik Nagar', name_bn: 'মানিক নগর', area: 'South Dhaka', lat: 23.7177, lng: 90.4322 },
+  { name_en: 'TT Para', name_bn: 'টিটি পাড়া', area: 'South Dhaka', lat: 23.7255, lng: 90.4288 },
+  { name_en: 'Kamalapur', name_bn: 'কমলাপুর', area: 'South Dhaka', lat: 23.7333, lng: 90.4255 },
+  { name_en: 'Mouchak', name_bn: 'মৌচাক', area: 'Dhaka Central', lat: 23.7455, lng: 90.4088 },
+  { name_en: 'Mogbazar', name_bn: 'মগবাজার', area: 'Dhaka Central', lat: 23.7488, lng: 90.4033 },
+  { name_en: 'Sat rasta', name_bn: 'সাত রাস্তা', area: 'Tejgaon', lat: 23.7588, lng: 90.3988 },
+  { name_en: 'Nabisco', name_bn: 'নাবিস্কো', area: 'Tejgaon', lat: 23.7655, lng: 90.4012 },
+  { name_en: 'Chairman Bari', name_bn: 'চেয়ারম্যান বাড়ী', area: 'Banani', lat: 23.7888, lng: 90.4022 },
+  { name_en: 'Kakali', name_bn: 'কাকলী', area: 'Banani', lat: 23.7911, lng: 90.4033 },
+  { name_en: 'Staff Road', name_bn: 'স্টাফ রোড', area: 'Cantonment', lat: 23.8055, lng: 90.4088 },
+  { name_en: 'MES', name_bn: 'এমইএস', area: 'Cantonment', lat: 23.8155, lng: 90.4044 },
+  { name_en: 'Shewra', name_bn: 'শেওড়া', area: 'Kuril', lat: 23.8211, lng: 90.4111 },
+  { name_en: 'Station Road', name_bn: 'স্টেশন রোড', area: 'Tongi', lat: 23.9011, lng: 90.4055 },
+  { name_en: 'Mill Gate', name_bn: 'মিল গেট', area: 'Tongi', lat: 23.9122, lng: 90.4088 },
+  { name_en: 'Board Bazar', name_bn: 'বোর্ড বাজার', area: 'Gazipur', lat: 23.9555, lng: 90.4188 },
+  { name_en: 'Gazipur Bypass', name_bn: 'গাজীপুর বাইপাস', area: 'Gazipur', lat: 23.9855, lng: 90.4155 },
+  { name_en: 'Gazipur Chourasta', name_bn: 'গাজীপুর চৌরাস্তা', area: 'Gazipur', lat: 23.9999, lng: 90.4255 },
 ];
 
 export const SEED_BUSES: Omit<Bus, 'id'>[] = [
@@ -73,6 +120,11 @@ export const SEED_BUSES: Omit<Bus, 'id'>[] = [
   { name: 'Suprabhat Paribahan', operator: 'Suprabhat Ltd', type: 'Non-AC', notes: 'Morning service' },
   { name: 'Bikash Paribahan', operator: 'Bikash Group', type: 'Non-AC', notes: 'Budget service' },
   { name: 'Royal Coach', operator: 'Royal Group', type: 'AC', notes: 'Premium AC coach' },
+  { name: 'Raida Paribahan', operator: 'Raida Transport', type: 'Non-AC', notes: 'Serves Postogola-Uttara' },
+  { name: 'Turag Paribahan', operator: 'Turag Group', type: 'Non-AC', notes: 'Mirpur-12 to Sayedabad' },
+  { name: 'Balaka Paribahan', operator: 'Balaka Enterprise', type: 'Non-AC', notes: 'Gabtoli to Sadarghat' },
+  { name: 'Anabil Paribahan', operator: 'Anabil Group', type: 'Non-AC', notes: 'Signboard to Gazipur' },
+  { name: 'Achim Paribahan', operator: 'Achim Group', type: 'Non-AC', notes: 'Mirpur-Postogola service' },
 ];
 
 // Route seed data: bus_id, start_stop_id, end_stop_id reference 1-indexed IDs from above arrays
@@ -141,4 +193,14 @@ export const SEED_ROUTES: Omit<Route, 'id'>[] = [
   { bus_id: 14, start_stop_id: 39, end_stop_id: 7, fixed_fare: 20, distance_km: 6.0, stops_order: JSON.stringify([39, 12, 37, 13, 16, 15, 38, 7]), direction: 'both', is_active: 1 },
   // Route 32: Rampura → Farmgate (Jamuna)
   { bus_id: 9, start_stop_id: 29, end_stop_id: 6, fixed_fare: 25, distance_km: 9.0, stops_order: JSON.stringify([29, 45, 34, 18, 8, 33, 6]), direction: 'both', is_active: 1 },
+  // Route 33: Postogola → Dia Bari (Raida)
+  { bus_id: 21, start_stop_id: 54, end_stop_id: 81, fixed_fare: 45, distance_km: 26.5, stops_order: JSON.stringify([54, 64, 35, 65, 36, 66, 67, 51, 68, 69, 70, 71, 30, 72, 73, 82, 61, 60, 74, 75, 62, 76, 24, 77, 78, 79, 80, 81]), direction: 'both', is_active: 1 },
+  // Route 34: Jatrabari → Tongi (Turag)
+  { bus_id: 22, start_stop_id: 42, end_stop_id: 32, fixed_fare: 40, distance_km: 25.0, stops_order: JSON.stringify([42, 43, 65, 66, 51, 82, 68, 69, 70, 37, 71, 72, 81, 60, 59, 73, 58, 75, 31, 76, 77, 78, 79, 38, 32]), direction: 'both', is_active: 1 },
+  // Route 35: Sayedabad → Gazipur Chourasta (Balaka)
+  { bus_id: 23, start_stop_id: 36, end_stop_id: 99, fixed_fare: 60, distance_km: 35.0, stops_order: JSON.stringify([36, 83, 84, 85, 82, 86, 87, 88, 89, 21, 90, 22, 91, 92, 93, 94, 58, 75, 24, 76, 77, 78, 79, 31, 25, 95, 96, 97, 98, 99]), direction: 'both', is_active: 1 },
+  // Route 36: Signboard → Gazipur (Anabil)
+  { bus_id: 24, start_stop_id: 55, end_stop_id: 33, fixed_fare: 60, distance_km: 42.0, stops_order: JSON.stringify([55, 56, 35, 36, 66, 51, 29, 30, 62, 24, 23, 32, 33]), direction: 'both', is_active: 1 },
+  // Route 37: Mirpur-12 → Postogola (Achim)
+  { bus_id: 25, start_stop_id: 3, end_stop_id: 54, fixed_fare: 45, distance_km: 22.5, stops_order: JSON.stringify([3, 2, 1, 48, 47, 46, 44, 19, 21, 28, 34, 45, 14, 7, 41, 10, 9, 11, 43, 42, 54]), direction: 'both', is_active: 1 },
 ];
