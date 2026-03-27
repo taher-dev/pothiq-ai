@@ -1,0 +1,144 @@
+// ============================================
+// Pothiq AI — Seed Data for Dhaka Bus Routes
+// ============================================
+
+import type { Stop, Bus, Route } from '../types';
+
+export const SEED_STOPS: Omit<Stop, 'id' | 'created_at'>[] = [
+  { name_en: 'Mirpur-1', name_bn: 'মিরপুর-১', area: 'Mirpur', lat: 23.8042, lng: 90.3656 },
+  { name_en: 'Mirpur-10', name_bn: 'মিরপুর-১০', area: 'Mirpur', lat: 23.8069, lng: 90.3687 },
+  { name_en: 'Mirpur-12', name_bn: 'মিরপুর-১২', area: 'Mirpur', lat: 23.8223, lng: 90.3654 },
+  { name_en: 'Kalshi', name_bn: 'কালশী', area: 'Mirpur', lat: 23.8283, lng: 90.3704 },
+  { name_en: 'Kafrul', name_bn: 'কাফরুল', area: 'Mirpur', lat: 23.7948, lng: 90.3830 },
+  { name_en: 'Farmgate', name_bn: 'ফার্মগেট', area: 'Dhaka Central', lat: 23.7573, lng: 90.3880 },
+  { name_en: 'Shahbagh', name_bn: 'শাহবাগ', area: 'Dhaka Central', lat: 23.7381, lng: 90.3957 },
+  { name_en: 'Karwan Bazar', name_bn: 'কারওয়ান বাজার', area: 'Dhaka Central', lat: 23.7512, lng: 90.3931 },
+  { name_en: 'Motijheel', name_bn: 'মতিঝিল', area: 'Old Dhaka', lat: 23.7289, lng: 90.4194 },
+  { name_en: 'Gulistan', name_bn: 'গুলিস্তান', area: 'Old Dhaka', lat: 23.7252, lng: 90.4135 },
+  { name_en: 'Sadarghat', name_bn: 'সদরঘাট', area: 'Old Dhaka', lat: 23.7085, lng: 90.4074 },
+  { name_en: 'Dhanmondi-27', name_bn: 'ধানমন্ডি-২৭', area: 'Dhanmondi', lat: 23.7479, lng: 90.3732 },
+  { name_en: 'Jigatola', name_bn: 'জিগাতলা', area: 'Dhanmondi', lat: 23.7393, lng: 90.3706 },
+  { name_en: 'Azimpur', name_bn: 'আজিমপুর', area: 'Dhaka Central', lat: 23.7285, lng: 90.3844 },
+  { name_en: 'New Market', name_bn: 'নিউ মার্কেট', area: 'Dhaka Central', lat: 23.7335, lng: 90.3854 },
+  { name_en: 'Science Lab', name_bn: 'সায়েন্স ল্যাব', area: 'Dhaka Central', lat: 23.7394, lng: 90.3830 },
+  { name_en: 'Elephant Road', name_bn: 'এলিফ্যান্ট রোড', area: 'Dhaka Central', lat: 23.7371, lng: 90.3877 },
+  { name_en: 'Bangla Motor', name_bn: 'বাংলা মোটর', area: 'Dhaka Central', lat: 23.7471, lng: 90.3935 },
+  { name_en: 'Paltan', name_bn: 'পল্টন', area: 'Old Dhaka', lat: 23.7348, lng: 90.4131 },
+  { name_en: 'Arambagh', name_bn: 'আরামবাগ', area: 'Old Dhaka', lat: 23.7308, lng: 90.4093 },
+  { name_en: 'Mohakhali', name_bn: 'মহাখালী', area: 'Gulshan', lat: 23.7781, lng: 90.4054 },
+  { name_en: 'Banani', name_bn: 'বনানী', area: 'Gulshan', lat: 23.7938, lng: 90.4024 },
+  { name_en: 'Uttara', name_bn: 'উত্তরা', area: 'Uttara', lat: 23.8759, lng: 90.3795 },
+  { name_en: 'Airport', name_bn: 'বিমানবন্দর', area: 'Uttara', lat: 23.8513, lng: 90.4068 },
+  { name_en: 'Tongi', name_bn: 'টঙ্গী', area: 'Gazipur', lat: 23.9322, lng: 90.4014 },
+  { name_en: 'Gazipur', name_bn: 'গাজীপুর', area: 'Gazipur', lat: 24.0023, lng: 90.4208 },
+  { name_en: 'Gulshan-1', name_bn: 'গুলশান-১', area: 'Gulshan', lat: 23.7813, lng: 90.4171 },
+  { name_en: 'Gulshan-2', name_bn: 'গুলশান-২', area: 'Gulshan', lat: 23.7947, lng: 90.4147 },
+  { name_en: 'Rampura', name_bn: 'রামপুরা', area: 'Rampura', lat: 23.7640, lng: 90.4256 },
+  { name_en: 'Badda', name_bn: 'বাড্ডা', area: 'Badda', lat: 23.7806, lng: 90.4265 },
+  { name_en: 'Abdullahpur', name_bn: 'আব্দুল্লাহপুর', area: 'Uttara', lat: 23.8680, lng: 90.3960 },
+  { name_en: 'Cantonment', name_bn: 'ক্যান্টনমেন্ট', area: 'Cantonment', lat: 23.8115, lng: 90.4010 },
+  { name_en: 'Tejgaon', name_bn: 'তেজগাঁও', area: 'Dhaka Central', lat: 23.7627, lng: 90.3989 },
+  { name_en: 'Shantinagar', name_bn: 'শান্তিনগর', area: 'Old Dhaka', lat: 23.7385, lng: 90.4119 },
+  { name_en: 'Jatrabari', name_bn: 'যাত্রাবাড়ী', area: 'South Dhaka', lat: 23.7104, lng: 90.4332 },
+  { name_en: 'Sayedabad', name_bn: 'সায়েদাবাদ', area: 'South Dhaka', lat: 23.7144, lng: 90.4268 },
+  { name_en: 'Dhanmondi-32', name_bn: 'ধানমন্ডি-৩২', area: 'Dhanmondi', lat: 23.7500, lng: 90.3715 },
+  { name_en: 'Nilkhet', name_bn: 'নীলক্ষেত', area: 'Dhaka Central', lat: 23.7327, lng: 90.3880 },
+  { name_en: 'Mohammadpur', name_bn: 'মোহাম্মদপুর', area: 'Mohammadpur', lat: 23.7664, lng: 90.3589 },
+  { name_en: 'Shyamoli', name_bn: 'শ্যামলী', area: 'Mohammadpur', lat: 23.7747, lng: 90.3641 },
+  { name_en: 'Technical Mor', name_bn: 'টেকনিক্যাল মোড়', area: 'Mirpur', lat: 23.7842, lng: 90.3729 },
+  { name_en: 'Agargaon', name_bn: 'আগারগাঁও', area: 'Dhaka Central', lat: 23.7783, lng: 90.3789 },
+  { name_en: 'Bijoy Sarani', name_bn: 'বিজয় সরণি', area: 'Dhaka Central', lat: 23.7663, lng: 90.3893 },
+  { name_en: 'Khilgaon', name_bn: 'খিলগাঁও', area: 'East Dhaka', lat: 23.7450, lng: 90.4300 },
+  { name_en: 'Malibagh', name_bn: 'মালিবাগ', area: 'East Dhaka', lat: 23.7490, lng: 90.4170 },
+];
+
+export const SEED_BUSES: Omit<Bus, 'id'>[] = [
+  { name: 'Doleshwar Paribahan', operator: 'Doleshwar Transport', type: 'AC', notes: 'Premium AC service' },
+  { name: 'Shyamoli Paribahan', operator: 'Shyamoli NR Travels', type: 'Non-AC', notes: 'Popular long-distance service' },
+  { name: 'BRTC (Bangladesh Road Transport Corporation)', operator: 'Government', type: 'AC', notes: 'Government-run AC buses' },
+  { name: 'Mohakhali Bus Service', operator: 'Private', type: 'Non-AC', notes: 'Serves Mohakhali area' },
+  { name: 'Ababil Paribahan', operator: 'Ababil Transport Ltd', type: 'Non-AC', notes: 'Budget-friendly option' },
+  { name: 'Tuba Line', operator: 'Tuba Group', type: 'Non-AC', notes: 'Serves Mirpur-Motijheel' },
+  { name: 'Projapoti Paribahan', operator: 'Projapoti Group', type: 'Non-AC', notes: 'Mirpur routes' },
+  { name: 'Eid Gah Paribahan', operator: 'Private', type: 'Non-AC', notes: 'Budget transport' },
+  { name: 'Jamuna Paribahan', operator: 'Jamuna Group', type: 'Non-AC', notes: 'Uttara-Motijheel service' },
+  { name: 'Trans Silva', operator: 'Silva Group', type: 'Non-AC', notes: 'Premium service' },
+  { name: 'Green Dhaka', operator: 'Green Group', type: 'CNG', notes: 'Eco-friendly CNG buses' },
+  { name: 'Bihongo Paribahan', operator: 'Bihongo Enterprise', type: 'Non-AC', notes: 'Popular Mirpur routes' },
+  { name: 'Kohinoor Paribahan', operator: 'Kohinoor Group', type: 'Non-AC', notes: 'Multiple routes in Dhaka' },
+  { name: 'Desh Transport', operator: 'Desh Group', type: 'Non-AC', notes: 'Wide network coverage' },
+  { name: 'Gazipur Paribahan', operator: 'Private', type: 'Non-AC', notes: 'Dhaka-Gazipur service' },
+  { name: 'Uttara Paribahan', operator: 'Private', type: 'Non-AC', notes: 'Uttara routes' },
+  { name: 'City Service Bus', operator: 'DSCC', type: 'Non-AC', notes: 'City corporation buses' },
+  { name: 'Suprabhat Paribahan', operator: 'Suprabhat Ltd', type: 'Non-AC', notes: 'Morning service' },
+  { name: 'Bikash Paribahan', operator: 'Bikash Group', type: 'Non-AC', notes: 'Budget service' },
+  { name: 'Royal Coach', operator: 'Royal Group', type: 'AC', notes: 'Premium AC coach' },
+];
+
+// Route seed data: bus_id, start_stop_id, end_stop_id reference 1-indexed IDs from above arrays
+export const SEED_ROUTES: Omit<Route, 'id'>[] = [
+  // Route 1: Mirpur-12 → Motijheel via Farmgate (Doleshwar)
+  { bus_id: 1, start_stop_id: 3, end_stop_id: 9, fixed_fare: 40, distance_km: 14.5, stops_order: JSON.stringify([3, 4, 2, 1, 5, 41, 42, 6, 8, 18, 7, 19, 9]), direction: 'both', is_active: 1 },
+  // Route 2: Uttara → Motijheel (Shyamoli)
+  { bus_id: 2, start_stop_id: 23, end_stop_id: 9, fixed_fare: 50, distance_km: 20.0, stops_order: JSON.stringify([23, 31, 24, 32, 22, 21, 8, 6, 18, 7, 17, 19, 9]), direction: 'both', is_active: 1 },
+  // Route 3: Mirpur-10 → Gulistan (BRTC)
+  { bus_id: 3, start_stop_id: 2, end_stop_id: 10, fixed_fare: 35, distance_km: 12.0, stops_order: JSON.stringify([2, 1, 5, 41, 42, 6, 43, 8, 18, 7, 17, 19, 20, 10]), direction: 'both', is_active: 1 },
+  // Route 4: Mohakhali → Sadarghat (Mohakhali Bus)
+  { bus_id: 4, start_stop_id: 21, end_stop_id: 11, fixed_fare: 30, distance_km: 11.2, stops_order: JSON.stringify([21, 8, 33, 6, 43, 18, 7, 34, 19, 20, 10, 9, 11]), direction: 'both', is_active: 1 },
+  // Route 5: Mirpur-1 → Gulistan (Ababil)
+  { bus_id: 5, start_stop_id: 1, end_stop_id: 10, fixed_fare: 30, distance_km: 11.0, stops_order: JSON.stringify([1, 5, 41, 40, 39, 12, 37, 13, 16, 15, 38, 14, 10]), direction: 'both', is_active: 1 },
+  // Route 6: Mirpur-10 → Motijheel (Tuba Line)
+  { bus_id: 6, start_stop_id: 2, end_stop_id: 9, fixed_fare: 30, distance_km: 12.5, stops_order: JSON.stringify([2, 1, 41, 42, 6, 8, 33, 18, 7, 17, 19, 20, 9]), direction: 'both', is_active: 1 },
+  // Route 7: Mirpur-12 → Gulistan (Projapoti)
+  { bus_id: 7, start_stop_id: 3, end_stop_id: 10, fixed_fare: 35, distance_km: 15.0, stops_order: JSON.stringify([3, 4, 2, 1, 5, 42, 6, 43, 8, 7, 17, 34, 19, 20, 10]), direction: 'both', is_active: 1 },
+  // Route 8: Gazipur → Gulistan (Gazipur Paribahan)
+  { bus_id: 15, start_stop_id: 26, end_stop_id: 10, fixed_fare: 60, distance_km: 35.0, stops_order: JSON.stringify([26, 25, 23, 31, 24, 32, 22, 21, 8, 6, 18, 7, 19, 20, 10]), direction: 'both', is_active: 1 },
+  // Route 9: Uttara → Sadarghat (Jamuna)
+  { bus_id: 9, start_stop_id: 23, end_stop_id: 11, fixed_fare: 55, distance_km: 24.0, stops_order: JSON.stringify([23, 31, 24, 32, 22, 21, 8, 6, 18, 7, 34, 19, 20, 10, 9, 11]), direction: 'both', is_active: 1 },
+  // Route 10: Mirpur-1 → Shahbagh (Bihongo)
+  { bus_id: 12, start_stop_id: 1, end_stop_id: 7, fixed_fare: 25, distance_km: 9.0, stops_order: JSON.stringify([1, 5, 41, 42, 6, 43, 8, 18, 7]), direction: 'both', is_active: 1 },
+  // Route 11: Dhanmondi-27 → Motijheel (Kohinoor)
+  { bus_id: 13, start_stop_id: 12, end_stop_id: 9, fixed_fare: 25, distance_km: 8.5, stops_order: JSON.stringify([12, 37, 13, 16, 15, 38, 7, 17, 34, 19, 20, 9]), direction: 'both', is_active: 1 },
+  // Route 12: Mohakhali → Jatrabari (Trans Silva)
+  { bus_id: 10, start_stop_id: 21, end_stop_id: 35, fixed_fare: 35, distance_km: 13.5, stops_order: JSON.stringify([21, 8, 33, 43, 18, 7, 34, 45, 29, 44, 36, 35]), direction: 'both', is_active: 1 },
+  // Route 13: Uttara → Farmgate (Uttara Paribahan)
+  { bus_id: 16, start_stop_id: 23, end_stop_id: 6, fixed_fare: 40, distance_km: 16.0, stops_order: JSON.stringify([23, 31, 24, 32, 22, 21, 8, 33, 6]), direction: 'both', is_active: 1 },
+  // Route 14: Mirpur-10 → Sadarghat (Eid Gah)
+  { bus_id: 8, start_stop_id: 2, end_stop_id: 11, fixed_fare: 40, distance_km: 16.0, stops_order: JSON.stringify([2, 1, 5, 41, 42, 6, 8, 18, 7, 17, 19, 20, 10, 9, 11]), direction: 'both', is_active: 1 },
+  // Route 15: Airport → Motijheel (BRTC AC)
+  { bus_id: 3, start_stop_id: 24, end_stop_id: 9, fixed_fare: 50, distance_km: 18.0, stops_order: JSON.stringify([24, 32, 22, 28, 27, 21, 8, 33, 6, 43, 18, 7, 34, 19, 9]), direction: 'both', is_active: 1 },
+  // Route 16: Shyamoli → Gulistan (City Service)
+  { bus_id: 17, start_stop_id: 40, end_stop_id: 10, fixed_fare: 25, distance_km: 9.0, stops_order: JSON.stringify([40, 42, 6, 43, 8, 18, 7, 17, 34, 19, 20, 10]), direction: 'both', is_active: 1 },
+  // Route 17: Tongi → Motijheel (Desh Transport)
+  { bus_id: 14, start_stop_id: 25, end_stop_id: 9, fixed_fare: 55, distance_km: 28.0, stops_order: JSON.stringify([25, 23, 31, 24, 32, 22, 21, 8, 6, 18, 7, 19, 9]), direction: 'both', is_active: 1 },
+  // Route 18: Mohammadpur → Motijheel (Suprabhat)
+  { bus_id: 18, start_stop_id: 39, end_stop_id: 9, fixed_fare: 30, distance_km: 10.5, stops_order: JSON.stringify([39, 12, 37, 13, 16, 15, 38, 14, 7, 17, 34, 19, 9]), direction: 'both', is_active: 1 },
+  // Route 19: Mirpur-12 → Shahbagh (Green Dhaka)
+  { bus_id: 11, start_stop_id: 3, end_stop_id: 7, fixed_fare: 30, distance_km: 11.0, stops_order: JSON.stringify([3, 4, 2, 1, 5, 41, 42, 6, 8, 18, 7]), direction: 'both', is_active: 1 },
+  // Route 20: Banani → Sadarghat (Doleshwar)
+  { bus_id: 1, start_stop_id: 22, end_stop_id: 11, fixed_fare: 45, distance_km: 17.0, stops_order: JSON.stringify([22, 21, 8, 33, 6, 43, 18, 7, 34, 19, 20, 10, 9, 11]), direction: 'both', is_active: 1 },
+  // Route 21: Agargaon → Gulistan (Bikash)
+  { bus_id: 19, start_stop_id: 42, end_stop_id: 10, fixed_fare: 25, distance_km: 10.0, stops_order: JSON.stringify([42, 6, 43, 8, 18, 7, 17, 34, 19, 20, 10]), direction: 'both', is_active: 1 },
+  // Route 22: Gazipur → Motijheel (Royal Coach AC)
+  { bus_id: 20, start_stop_id: 26, end_stop_id: 9, fixed_fare: 80, distance_km: 40.0, stops_order: JSON.stringify([26, 25, 23, 31, 24, 32, 22, 28, 27, 21, 8, 33, 6, 18, 7, 19, 9]), direction: 'both', is_active: 1 },
+  // Route 23: Mirpur-1 → Jatrabari (Ababil)
+  { bus_id: 5, start_stop_id: 1, end_stop_id: 35, fixed_fare: 40, distance_km: 16.5, stops_order: JSON.stringify([1, 5, 41, 42, 6, 8, 18, 7, 34, 45, 29, 44, 36, 35]), direction: 'both', is_active: 1 },
+  // Route 24: Uttara → Sayedabad (Shyamoli)
+  { bus_id: 2, start_stop_id: 23, end_stop_id: 36, fixed_fare: 50, distance_km: 22.0, stops_order: JSON.stringify([23, 31, 24, 32, 22, 21, 8, 33, 6, 18, 7, 34, 45, 29, 44, 36]), direction: 'both', is_active: 1 },
+  // Route 25: Mirpur-10 → Sayedabad (Tuba Line)
+  { bus_id: 6, start_stop_id: 2, end_stop_id: 36, fixed_fare: 35, distance_km: 15.0, stops_order: JSON.stringify([2, 1, 41, 42, 6, 8, 18, 7, 34, 45, 44, 36]), direction: 'both', is_active: 1 },
+  // Route 26: Science Lab → Paltan (Kohinoor)
+  { bus_id: 13, start_stop_id: 16, end_stop_id: 19, fixed_fare: 15, distance_km: 5.0, stops_order: JSON.stringify([16, 15, 38, 7, 17, 34, 19]), direction: 'both', is_active: 1 },
+  // Route 27: Farmgate → Sadarghat (BRTC)
+  { bus_id: 3, start_stop_id: 6, end_stop_id: 11, fixed_fare: 30, distance_km: 10.0, stops_order: JSON.stringify([6, 43, 8, 18, 7, 17, 34, 19, 20, 10, 9, 11]), direction: 'both', is_active: 1 },
+  // Route 28: Badda → Gulistan (Projapoti)
+  { bus_id: 7, start_stop_id: 30, end_stop_id: 10, fixed_fare: 30, distance_km: 11.0, stops_order: JSON.stringify([30, 29, 45, 34, 19, 20, 10]), direction: 'both', is_active: 1 },
+  // Route 29: Gulshan-2 → Motijheel (Doleshwar)
+  { bus_id: 1, start_stop_id: 28, end_stop_id: 9, fixed_fare: 30, distance_km: 10.0, stops_order: JSON.stringify([28, 27, 21, 8, 33, 43, 18, 7, 34, 19, 9]), direction: 'both', is_active: 1 },
+  // Route 30: Mirpur-10 → New Market (Bihongo)
+  { bus_id: 12, start_stop_id: 2, end_stop_id: 15, fixed_fare: 25, distance_km: 8.5, stops_order: JSON.stringify([2, 41, 40, 39, 12, 37, 13, 16, 15]), direction: 'both', is_active: 1 },
+  // Route 31: Mohammadpur → Shahbagh (Desh Transport)
+  { bus_id: 14, start_stop_id: 39, end_stop_id: 7, fixed_fare: 20, distance_km: 6.0, stops_order: JSON.stringify([39, 12, 37, 13, 16, 15, 38, 7]), direction: 'both', is_active: 1 },
+  // Route 32: Rampura → Farmgate (Jamuna)
+  { bus_id: 9, start_stop_id: 29, end_stop_id: 6, fixed_fare: 25, distance_km: 9.0, stops_order: JSON.stringify([29, 45, 34, 18, 8, 33, 6]), direction: 'both', is_active: 1 },
+];
