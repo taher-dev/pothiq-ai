@@ -40,6 +40,7 @@ export interface SearchResult {
   intermediateStops: Stop[];
   fixedFare: number;
   distanceFare: number;
+  segmentDistance: number;
 }
 
 export interface RecentSearch {

@@ -192,7 +192,7 @@ export function ResultCard({ result, onPress }: ResultCardProps) {
               <Text style={[styles.fareLabel, { color: colors.textSecondary }]}>
                 {lang === 'bn' ? BENGALI_LABELS.distance : 'Distance'}
               </Text>
-              <Text style={[styles.fareValue, { color: colors.text }]}>{formatDistance(route.distance_km)}</Text>
+              <Text style={[styles.fareValue, { color: colors.text }]}>{formatDistance(result.segmentDistance)}</Text>
             </View>
           </View>
 

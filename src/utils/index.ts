@@ -80,8 +80,8 @@ export function routeMatchesStops(
 ): boolean {
   const startIdx = stopsOrder.indexOf(startStopId);
   const endIdx = stopsOrder.indexOf(endStopId);
-  // Route must contain both stops and start must come before end
-  return startIdx !== -1 && endIdx !== -1 && startIdx < endIdx;
+  // Both stops must exist in the route
+  return startIdx !== -1 && endIdx !== -1;
 }
 
 /** Get intermediate stops between start and end in a route */
@@ -92,8 +92,17 @@ export function getIntermediateStopIds(
 ): number[] {
   const startIdx = stopsOrder.indexOf(startStopId);
   const endIdx = stopsOrder.indexOf(endStopId);
-  if (startIdx === -1 || endIdx === -1 || startIdx >= endIdx) return [];
-  return stopsOrder.slice(startIdx + 1, endIdx);
+  
+  if (startIdx === -1 || endIdx === -1) return [];
+
+  if (startIdx < endIdx) {
+    // Forward direction
+    return stopsOrder.slice(startIdx + 1, endIdx);
+  } else {
+    // Backward direction
+    const segment = stopsOrder.slice(endIdx + 1, startIdx);
+    return segment.reverse();
+  }
 }
 
 /** Validate CSV data for stops */

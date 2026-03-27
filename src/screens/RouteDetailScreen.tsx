@@ -3,7 +3,7 @@
 // ============================================
 
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Card, Chip, Divider } from 'react-native-paper';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useThemeColors } from '../components';
@@ -25,9 +25,28 @@ export default function RouteDetailScreen() {
   const [allStops, setAllStops] = useState<Stop[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // New segment-specific state
+  const [segmentData, setSegmentData] = useState<{ fare: number; distance: number } | null>(null);
+
+  // Interactive Calculator State
+  const [calcFrom, setCalcFrom] = useState<Stop | null>(null);
+  const [calcTo, setCalcTo] = useState<Stop | null>(null);
+  const [calcResult, setCalcResult] = useState<{ fare: number; distance: number } | null>(null);
+
   useEffect(() => {
     loadData();
   }, [routeId]);
+
+  useEffect(() => {
+    if (allStops.length > 1) {
+      setCalcFrom(allStops[0]);
+      setCalcTo(allStops[allStops.length - 1]);
+    }
+  }, [allStops]);
+
+  useEffect(() => {
+    updateCalc();
+  }, [calcFrom, calcTo]);
 
   const loadData = async () => {
     setLoading(true);
@@ -39,11 +58,40 @@ export default function RouteDetailScreen() {
       const stopsOrder = parseStopsOrder(r.stops_order);
       const stops = await db.getAllStops();
       const sm: Record<number, Stop> = {};
-      stops.forEach(s => sm[s.id] = s);
+      stops.forEach(s => (sm[s.id] = s));
       const orderedStops = stopsOrder.map(sid => sm[sid]).filter(Boolean);
       setAllStops(orderedStops);
+
+      // Fetch segment data for start-to-end as default
+      const database = await db.getDatabase();
+      const matrix = await database.getFirstAsync<{ fare: number; distance_km: number }>(
+        'SELECT fare, distance_km FROM fare_matrix WHERE bus_id = ? AND from_id = ? AND to_id = ?',
+        [r.bus_id, r.start_stop_id, r.end_stop_id]
+      );
+      if (matrix) {
+        setSegmentData({ fare: matrix.fare, distance: matrix.distance_km });
+      }
     }
     setLoading(false);
+  };
+
+  const updateCalc = async () => {
+    if (!calcFrom || !calcTo || !routeData) return;
+    const database = await db.getDatabase();
+    const matrix = await database.getFirstAsync<{ fare: number; distance_km: number }>(
+      'SELECT fare, distance_km FROM fare_matrix WHERE bus_id = ? AND from_id = ? AND to_id = ?',
+      [routeData.bus_id, calcFrom.id, calcTo.id]
+    );
+    if (matrix) {
+      setCalcResult({ fare: matrix.fare, distance: matrix.distance_km });
+    } else {
+      // Fallback logic
+      const fromIdx = allStops.findIndex(s => s.id === calcFrom.id);
+      const toIdx = allStops.findIndex(s => s.id === calcTo.id);
+      const stages = Math.abs(toIdx - fromIdx);
+      const dist = stages * 1.5;
+      setCalcResult({ fare: Math.max(10, Math.ceil(dist * 2.45)), distance: dist });
+    }
   };
 
   if (loading || !routeData || !bus) {
@@ -57,7 +105,8 @@ export default function RouteDetailScreen() {
     );
   }
 
-  const distanceFare = calcDistanceFare(routeData.distance_km);
+  const displayFare = segmentData?.fare || routeData.fixed_fare;
+  const displayDist = segmentData?.distance || routeData.distance_km;
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.bg }]}>
@@ -84,17 +133,17 @@ export default function RouteDetailScreen() {
         <Card.Content>
           <View style={styles.fareGrid}>
             <View style={styles.fareBox}>
-              <Text style={[styles.fareAmount, { color: COLORS.primary }]}>{formatFare(routeData.fixed_fare)}</Text>
+              <Text style={[styles.fareAmount, { color: COLORS.primary }]}>{formatFare(displayFare)}</Text>
               <Text style={[styles.fareDesc, { color: colors.textSecondary }]}>{labels.fixedFare}</Text>
             </View>
             <View style={[styles.fareDivider, { backgroundColor: colors.divider }]} />
             <View style={styles.fareBox}>
-              <Text style={[styles.fareAmount, { color: COLORS.accent }]}>{formatFare(distanceFare)}</Text>
+              <Text style={[styles.fareAmount, { color: COLORS.accent }]}>{formatFare(displayFare)}</Text>
               <Text style={[styles.fareDesc, { color: colors.textSecondary }]}>{labels.distanceFare}</Text>
             </View>
             <View style={[styles.fareDivider, { backgroundColor: colors.divider }]} />
             <View style={styles.fareBox}>
-              <Text style={[styles.fareAmount, { color: colors.text }]}>{formatDistance(routeData.distance_km)}</Text>
+              <Text style={[styles.fareAmount, { color: colors.text }]}>{formatDistance(displayDist)}</Text>
               <Text style={[styles.fareDesc, { color: colors.textSecondary }]}>{labels.distance}</Text>
             </View>
           </View>
@@ -148,45 +197,58 @@ export default function RouteDetailScreen() {
           <Text style={[styles.sectionHeader, { color: colors.text }]}>
             🎫 {lang === 'bn' ? 'স্টপেজ অনুযায়ী ভাড়া' : 'Stoppage Fare Calculator'}
           </Text>
-          <Text style={{ color: colors.textSecondary, fontSize: 12, marginBottom: 12 }}>
-            {lang === 'bn' ? 'নিচে স্টপ নির্বাচন করে সঠিক ভাড়া দেখুন' : 'Select stops to calculate official government fare'}
-          </Text>
-          
+
           <View style={styles.calcRow}>
-             <View style={{ flex: 1 }}>
-                <Text style={styles.calcLabel}>{labels.from}</Text>
-                <View style={[styles.calcSelect, { backgroundColor: colors.input, borderColor: colors.divider }]}>
-                   <Text numberOfLines={1} style={{ color: colors.text, fontSize: 13 }}>{getStopName(allStops[0], lang)}</Text>
-                </View>
-             </View>
-             <View style={{ width: 30, alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
-                <Text style={{ color: colors.textSecondary }}>→</Text>
-             </View>
-             <View style={{ flex: 1 }}>
-                <Text style={styles.calcLabel}>{labels.to}</Text>
-                <View style={[styles.calcSelect, { backgroundColor: colors.input, borderColor: colors.divider }]}>
-                   <Text numberOfLines={1} style={{ color: colors.text, fontSize: 13 }}>{getStopName(allStops[allStops.length-1], lang)}</Text>
-                </View>
-             </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.calcLabel}>{labels.from}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  const idx = allStops.findIndex(s => s.id === calcFrom?.id);
+                  setCalcFrom(allStops[(idx + 1) % allStops.length]);
+                }}
+                style={[styles.calcSelect, { backgroundColor: colors.input, borderColor: colors.divider }]}
+              >
+                <Text numberOfLines={1} style={{ color: colors.text, fontSize: 13 }}>
+                  {calcFrom ? getStopName(calcFrom, lang) : '...'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ width: 30, alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
+              <Text style={{ color: colors.textSecondary }}>→</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.calcLabel}>{labels.to}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  const idx = allStops.findIndex(s => s.id === calcTo?.id);
+                  setCalcTo(allStops[(idx + 1) % allStops.length]);
+                }}
+                style={[styles.calcSelect, { backgroundColor: colors.input, borderColor: colors.divider }]}
+              >
+                <Text numberOfLines={1} style={{ color: colors.text, fontSize: 13 }}>
+                  {calcTo ? getStopName(calcTo, lang) : '...'}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           <Divider style={{ marginVertical: 15, backgroundColor: colors.divider }} />
 
           <View style={styles.calcResultRow}>
-             <View>
-                <Text style={[styles.calcTotalLabel, { color: colors.textSecondary }]}>{lang === 'bn' ? 'মোট ভাড়া' : 'Total Fare'}</Text>
-                <Text style={[styles.calcTotalAmount, { color: COLORS.success }]}>{formatFare(calcDistanceFare((allStops.length - 1) * 1.5))}</Text>
-             </View>
-             <View style={{ alignItems: 'flex-end' }}>
-                <Text style={[styles.calcTotalLabel, { color: colors.textSecondary, textAlign: 'right' }]}>{labels.distance}</Text>
-                <Text style={[styles.calcTotalAmount, { color: colors.text, textAlign: 'right', fontSize: 18 }]}>{( (allStops.length - 1) * 1.5 ).toFixed(1)} km</Text>
-             </View>
+            <View>
+              <Text style={[styles.calcTotalLabel, { color: colors.textSecondary }]}>{lang === 'bn' ? 'মোট ভাড়া' : 'Total Fare'}</Text>
+              <Text style={[styles.calcTotalAmount, { color: COLORS.success }]}>{formatFare(calcResult?.fare || 0)}</Text>
+            </View>
+            <View style={{ alignItems: 'flex-end' }}>
+              <Text style={[styles.calcTotalLabel, { color: colors.textSecondary, textAlign: 'right' }]}>{labels.distance}</Text>
+              <Text style={[styles.calcTotalAmount, { color: colors.text, textAlign: 'right', fontSize: 18 }]}>
+                {calcResult?.distance.toFixed(1) || '0.0'} km
+              </Text>
+            </View>
           </View>
-          
+
           <Text style={{ fontSize: 10, color: colors.textSecondary, marginTop: 10, fontStyle: 'italic' }}>
-            {lang === 'bn' 
-              ? '* সরকারি অনুমোদিত হার (২.৪৫ টাকা/কিমি) ও সর্বনিম্ন ভাড়া ১০ টাকা অনুযায়ী হিসাবকৃত' 
-              : '* Calculated based on official Govt. rate (2.45 BDT/KM) and 10 BDT min fare'}
+            {lang === 'bn' ? '* স্টপেজে ক্লিক করে স্টপ পরিবর্তন করুন' : '* Tap on the stops to change selection'}
           </Text>
         </Card.Content>
       </Card>
@@ -195,19 +257,24 @@ export default function RouteDetailScreen() {
       <Card style={[styles.infoCard, { backgroundColor: colors.card, marginVertical: 12, marginBottom: 30 }]} mode="elevated">
         <Card.Content>
           <View style={styles.infoRow}>
-            <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>
-              {lang === 'bn' ? 'দিক' : 'Direction'}
-            </Text>
+            <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>{lang === 'bn' ? 'দিক' : 'Direction'}</Text>
             <Chip style={{ backgroundColor: colors.input }}>
-              {routeData.direction === 'both' ? (lang === 'bn' ? 'উভয়' : 'Both Ways') :
-                routeData.direction === 'up' ? (lang === 'bn' ? 'উপরে' : 'Up') : (lang === 'bn' ? 'নিচে' : 'Down')}
+              {routeData.direction === 'both'
+                ? lang === 'bn'
+                  ? 'উভয়'
+                  : 'Both Ways'
+                : routeData.direction === 'up'
+                  ? lang === 'bn'
+                    ? 'উপরে'
+                    : 'Up'
+                  : lang === 'bn'
+                    ? 'নিচে'
+                    : 'Down'}
             </Chip>
           </View>
           {bus.notes ? (
             <View style={[styles.infoRow, { marginTop: 8 }]}>
-              <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>
-                {lang === 'bn' ? 'নোট' : 'Notes'}
-              </Text>
+              <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>{lang === 'bn' ? 'নোট' : 'Notes'}</Text>
               <Text style={{ color: colors.text, flex: 1, textAlign: 'right', fontSize: 13 }}>{bus.notes}</Text>
             </View>
           ) : null}

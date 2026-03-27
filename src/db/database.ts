@@ -3,7 +3,6 @@
 // ============================================
 
 import * as SQLite from 'expo-sqlite';
-import { SEED_STOPS, SEED_BUSES, SEED_ROUTES } from './seedData';
 import type { Stop, Bus, Route, SearchResult } from '../types';
 import { parseStopsOrder, routeMatchesStops, getIntermediateStopIds } from '../utils';
 import { FARE_PER_KM, MIN_FARE } from '../constants';
@@ -18,6 +17,14 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
 
 export async function initializeDatabase(): Promise<void> {
   const database = await getDatabase();
+
+  // Drop tables to handle schema changes (Safe since we re-seed)
+  await database.execAsync(`
+    DROP TABLE IF EXISTS fare_matrix;
+    DROP TABLE IF EXISTS routes;
+    DROP TABLE IF EXISTS buses;
+    DROP TABLE IF EXISTS stops;
+  `);
 
   // Create tables
   await database.execAsync(`
@@ -55,36 +62,92 @@ export async function initializeDatabase(): Promise<void> {
       FOREIGN KEY (start_stop_id) REFERENCES stops(id),
       FOREIGN KEY (end_stop_id) REFERENCES stops(id)
     );
+
+    CREATE TABLE IF NOT EXISTS fare_matrix (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      bus_id INTEGER NOT NULL,
+      from_id INTEGER NOT NULL,
+      to_id INTEGER NOT NULL,
+      fare INTEGER NOT NULL,
+      distance_km REAL DEFAULT 0,
+      FOREIGN KEY (bus_id) REFERENCES buses(id),
+      FOREIGN KEY (from_id) REFERENCES stops(id),
+      FOREIGN KEY (to_id) REFERENCES stops(id)
+    );
   `);
 
-  // Check if data already seeded
-  const result = await database.getFirstAsync<{ count: number }>('SELECT COUNT(*) as count FROM stops');
-  if (result && result.count > 0) return;
+  // Clear everything for a clean reset (Redundant but safe)
+  await database.execAsync('DELETE FROM fare_matrix; DELETE FROM routes; DELETE FROM buses; DELETE FROM stops;');
 
-  // Seed stops
-  for (const stop of SEED_STOPS) {
-    await database.runAsync(
-      'INSERT INTO stops (name_en, name_bn, area, lat, lng) VALUES (?, ?, ?, ?, ?)',
-      [stop.name_en, stop.name_bn, stop.area, stop.lat, stop.lng]
-    );
-  }
+  // Clear everything for a clean reset
+  await database.execAsync('DELETE FROM fare_matrix; DELETE FROM routes; DELETE FROM buses; DELETE FROM stops;');
 
-  // Seed buses
-  for (const bus of SEED_BUSES) {
-    await database.runAsync(
-      'INSERT INTO buses (name, operator, type, notes) VALUES (?, ?, ?, ?)',
-      [bus.name, bus.operator, bus.type, bus.notes]
-    );
-  }
+  const { FARE_TEMPLATES } = require('./fareTemplates');
+  
+  // Track stops by name to avoid duplicates within templates
+  const stopMap: Record<string, number> = {};
 
-  // Seed routes
-  for (const route of SEED_ROUTES) {
-    await database.runAsync(
-      'INSERT INTO routes (bus_id, start_stop_id, end_stop_id, fixed_fare, distance_km, stops_order, direction, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [route.bus_id, route.start_stop_id, route.end_stop_id, route.fixed_fare, route.distance_km, route.stops_order, route.direction, route.is_active]
-    );
+  for (const [busName, template] of Object.entries(FARE_TEMPLATES as any)) {
+      // 1. Insert Bus
+      const busResult = await database.runAsync(
+        'INSERT INTO buses (name, operator, type, notes) VALUES (?, ?, ?, ?)',
+        [busName, (template as any).operator, 'Local', 'Clean Template Data']
+      );
+      const busId = busResult.lastInsertRowId;
+
+      // 2. Insert/Get Stops for this bus
+      const stopIds: number[] = [];
+      for (const stopObj of (template as any).stops) {
+          const sName = stopObj.name_en;
+          if (!stopMap[sName.toLowerCase()]) {
+             const res = await database.runAsync(
+               'INSERT INTO stops (name_en, name_bn, area) VALUES (?, ?, ?)',
+               [sName, stopObj.name_bn || sName, stopObj.area || 'Unknown']
+             );
+             stopMap[sName.toLowerCase()] = res.lastInsertRowId;
+          }
+          stopIds.push(stopMap[sName.toLowerCase()]);
+      }
+
+      // 3. Create main route record
+      if (stopIds.length >= 2) {
+        const startName = (template as any).stops[0].name_en;
+        const endName = (template as any).stops[(template as any).stops.length - 1].name_en;
+        const fullRouteKey = `${startName} - ${endName}`;
+        
+        const fullFareEntry = (template as any).fares.find((f: any) => f.from_to === fullRouteKey);
+        const fullFare = fullFareEntry ? fullFareEntry.fare : ((template as any).fares[(template as any).fares.length - 1]?.fare || 10);
+        const fullKm = fullFareEntry ? fullFareEntry.km : ((template as any).fares[(template as any).fares.length - 1]?.km || 1);
+
+        await database.runAsync(
+          'INSERT INTO routes (bus_id, start_stop_id, end_stop_id, fixed_fare, distance_km, stops_order, direction, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          [busId, stopIds[0], stopIds[stopIds.length-1], fullFare, fullKm, JSON.stringify(stopIds), 'both', 1]
+        );
+      }
+
+      // 4. Create fare matrix (Bidirectional Interchangeable)
+      for (const fareEntry of (template as any).fares) {
+          const parts = fareEntry.from_to.split(' - ');
+          const fromId = stopMap[parts[0].toLowerCase()];
+          const toId = stopMap[parts[1].toLowerCase()];
+          
+          if (fromId && toId) {
+             // Forward
+             await database.runAsync(
+               'INSERT INTO fare_matrix (bus_id, from_id, to_id, fare, distance_km) VALUES (?, ?, ?, ?, ?)',
+               [busId, fromId, toId, fareEntry.fare, fareEntry.km || 0]
+             );
+             // Backward (Interchangeable)
+             await database.runAsync(
+               'INSERT INTO fare_matrix (bus_id, from_id, to_id, fare, distance_km) VALUES (?, ?, ?, ?, ?)',
+               [busId, toId, fromId, fareEntry.fare, fareEntry.km || 0]
+             );
+          }
+      }
   }
 }
+
+// ... then search updated below
 
 // ==================== STOP QUERIES ====================
 
@@ -243,19 +306,26 @@ export async function searchRoutes(fromStopId: number, toStopId: number): Promis
   const allRoutes = await database.getAllAsync<Route>('SELECT * FROM routes WHERE is_active = 1');
   const results: SearchResult[] = [];
 
+  const fId = Number(fromStopId);
+  const tId = Number(toStopId);
+
   for (const route of allRoutes) {
     const stopsOrder = parseStopsOrder(route.stops_order);
+    
+    // Coerce IDs for robust comparison
+    const rStartId = Number(route.start_stop_id);
+    const rEndId = Number(route.end_stop_id);
 
     // Check direct match (start and end stops)
-    const isDirectMatch = route.start_stop_id === fromStopId && route.end_stop_id === toStopId;
+    const isDirectMatch = rStartId === fId && rEndId === tId;
 
     // Check intermediate match (from and to stops exist in the stops_order)
-    const isIntermediateMatch = routeMatchesStops(stopsOrder, fromStopId, toStopId);
+    const isIntermediateMatch = routeMatchesStops(stopsOrder, fId, tId);
 
     if (isDirectMatch || isIntermediateMatch) {
       const bus = await database.getFirstAsync<Bus>('SELECT * FROM buses WHERE id = ?', [route.bus_id]);
-      const startStop = await database.getFirstAsync<Stop>('SELECT * FROM stops WHERE id = ?', [fromStopId]);
-      const endStop = await database.getFirstAsync<Stop>('SELECT * FROM stops WHERE id = ?', [toStopId]);
+      const startStop = await database.getFirstAsync<Stop>('SELECT * FROM stops WHERE id = ?', [fId]);
+      const endStop = await database.getFirstAsync<Stop>('SELECT * FROM stops WHERE id = ?', [tId]);
 
       if (bus && startStop && endStop) {
         const intermediateIds = getIntermediateStopIds(stopsOrder, fromStopId, toStopId);
@@ -266,10 +336,21 @@ export async function searchRoutes(fromStopId: number, toStopId: number): Promis
           if (s) intermediateStops.push(s);
         }
 
-        // Dynamic segment fare: calculate based on number of stages (stops between + 1)
-        const numStages = intermediateIds.length + 1;
-        const segmentDistance = numStages * 1.5; // Estimated 1.5km per stop
-        const distanceFare = Math.max(segmentDistance * FARE_PER_KM, MIN_FARE);
+        // 1. Try to get official fare from matrix (directional interchangeable)
+        const matrixEntry = await database.getFirstAsync<{ fare: number; distance_km: number }>(
+          'SELECT fare, distance_km FROM fare_matrix WHERE bus_id = ? AND from_id = ? AND to_id = ?',
+          [route.bus_id, fromStopId, toStopId]
+        );
+
+        let finalFare = matrixEntry ? matrixEntry.fare : 0;
+        let finalDistance = matrixEntry ? matrixEntry.distance_km : 0;
+
+        // 2. Fallback to stage-based calculation if matrix entry missing
+        if (!finalFare) {
+           const numStages = intermediateIds.length + 1;
+           finalDistance = numStages * 1.5;
+           finalFare = Math.max(10, Math.ceil(finalDistance * 2.45 / 5) * 5);
+        }
 
         results.push({
           route,
@@ -277,8 +358,9 @@ export async function searchRoutes(fromStopId: number, toStopId: number): Promis
           startStop,
           endStop,
           intermediateStops,
-          fixedFare: Math.round(distanceFare), // Use calculated segment fare
-          distanceFare: Math.round(distanceFare),
+          fixedFare: finalFare,
+          distanceFare: finalFare,
+          segmentDistance: finalDistance,
         });
       }
     }
