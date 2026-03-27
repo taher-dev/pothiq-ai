@@ -66,9 +66,6 @@ export default function RouteDetailScreen() {
         <Card.Content>
           <Text style={styles.busNameLarge}>🚌 {bus.name}</Text>
           <View style={styles.badgeRow}>
-            <Chip style={styles.badge} textStyle={{ color: '#fff', fontSize: 11 }}>
-              {bus.type}
-            </Chip>
             <Chip style={[styles.badge, { backgroundColor: 'rgba(255,255,255,0.2)' }]} textStyle={{ color: '#fff', fontSize: 11 }}>
               {bus.operator}
             </Chip>

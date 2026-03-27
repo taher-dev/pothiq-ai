@@ -147,12 +147,6 @@ export function ResultCard({ result, onPress }: ResultCardProps) {
           <View style={styles.resultHeader}>
             <View style={{ flex: 1 }}>
               <Text style={[styles.busName, { color: colors.text }]}>🚌 {bus.name}</Text>
-              <Chip
-                style={[styles.typeBadge, { backgroundColor: bus.type === 'AC' ? '#E3F2FD' : '#FFF3E0' }]}
-                textStyle={{ fontSize: 10, color: bus.type === 'AC' ? '#1565C0' : '#E65100' }}
-              >
-                {bus.type}
-              </Chip>
             </View>
           </View>
 
@@ -209,18 +203,21 @@ export function ResultCard({ result, onPress }: ResultCardProps) {
                 {lang === 'bn' ? BENGALI_LABELS.intermediateStops : 'Via'}:
               </Text>
               <View style={styles.chipsRow}>
-                {intermediateStops.slice(0, 5).map(s => (
+                {intermediateStops.slice(0, 10).map(s => (
                   <Chip
                     key={s.id}
                     style={[styles.stopChip, { backgroundColor: colors.input }]}
-                    textStyle={{ fontSize: 10, color: colors.text }}
+                    textStyle={[styles.stopChipText, { color: colors.text }]}
                   >
                     {getStopName(s, lang)}
                   </Chip>
                 ))}
-                {intermediateStops.length > 5 && (
-                  <Chip style={[styles.stopChip, { backgroundColor: colors.input }]} textStyle={{ fontSize: 10, color: colors.textSecondary }}>
-                    +{intermediateStops.length - 5}
+                {intermediateStops.length > 10 && (
+                  <Chip
+                    style={[styles.stopChip, { backgroundColor: colors.input }]}
+                    textStyle={[styles.stopChipText, { color: colors.textSecondary }]}
+                  >
+                    +{intermediateStops.length - 10}
                   </Chip>
                 )}
               </View>
@@ -394,19 +391,29 @@ const styles = StyleSheet.create({
   },
   interStopsRow: {
     marginTop: 10,
+    width: '100%',
   },
   interStopsLabel: {
     fontSize: 12,
-    marginBottom: 4,
+    marginBottom: 6,
+    fontWeight: '600',
   },
   chipsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 4,
+    gap: 6,
+    width: '100%',
   },
   stopChip: {
-    height: 26,
-    marginBottom: 2,
+    height: 32,
+    marginBottom: 4,
+    justifyContent: 'center',
+  },
+  stopChipText: {
+    fontSize: 12,
+    lineHeight: 16,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
   skeleton: {
     borderRadius: 6,

@@ -128,10 +128,6 @@ function AllRoutesTab() {
             </View>
             <View style={styles.routeFare}>
               <Text style={[styles.fareText, { color: COLORS.primary }]}>{formatFare(item.fixed_fare)}</Text>
-              <Chip style={{ backgroundColor: bus.type === 'AC' ? '#E3F2FD' : '#FFF3E0', height: 24 }}
-                textStyle={{ fontSize: 10, color: bus.type === 'AC' ? '#1565C0' : '#E65100' }}>
-                {bus.type}
-              </Chip>
             </View>
           </Card.Content>
         </Card>
@@ -188,7 +184,7 @@ function BusesTab() {
           <View style={{ flex: 1 }}>
             <Text style={[styles.routeBusName, { color: colors.text }]}>🚌 {item.name}</Text>
             <Text style={[styles.routeStops, { color: colors.textSecondary }]}>
-              {item.operator} • {item.type}
+              {item.operator}
             </Text>
           </View>
           <Text style={{ fontSize: 20 }}>→</Text>
@@ -313,7 +309,7 @@ export function BusRoutesScreen() {
         <Card style={[styles.headerInfo, { backgroundColor: COLORS.primary }]}>
           <Card.Content>
             <Text style={{ color: '#fff', fontSize: 18, fontWeight: '800' }}>🚌 {bus.name}</Text>
-            <Text style={{ color: 'rgba(255,255,255,0.8)', marginTop: 4 }}>{bus.operator} • {bus.type}</Text>
+            <Text style={{ color: 'rgba(255,255,255,0.8)', marginTop: 4 }}>{bus.operator}</Text>
           </Card.Content>
         </Card>
       )}
