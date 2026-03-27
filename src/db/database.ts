@@ -266,7 +266,10 @@ export async function searchRoutes(fromStopId: number, toStopId: number): Promis
           if (s) intermediateStops.push(s);
         }
 
-        const distanceFare = Math.max(route.distance_km * FARE_PER_KM, MIN_FARE);
+        // Dynamic segment fare: calculate based on number of stages (stops between + 1)
+        const numStages = intermediateIds.length + 1;
+        const segmentDistance = numStages * 1.5; // Estimated 1.5km per stop
+        const distanceFare = Math.max(segmentDistance * FARE_PER_KM, MIN_FARE);
 
         results.push({
           route,
@@ -274,7 +277,7 @@ export async function searchRoutes(fromStopId: number, toStopId: number): Promis
           startStop,
           endStop,
           intermediateStops,
-          fixedFare: route.fixed_fare,
+          fixedFare: Math.round(distanceFare), // Use calculated segment fare
           distanceFare: Math.round(distanceFare),
         });
       }

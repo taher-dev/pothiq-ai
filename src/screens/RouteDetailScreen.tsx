@@ -142,8 +142,57 @@ export default function RouteDetailScreen() {
         </Card.Content>
       </Card>
 
+      {/* Stoppage Fare Calculator */}
+      <Card style={[styles.infoCard, { backgroundColor: colors.card, marginTop: 4 }]} mode="elevated">
+        <Card.Content>
+          <Text style={[styles.sectionHeader, { color: colors.text }]}>
+            🎫 {lang === 'bn' ? 'স্টপেজ অনুযায়ী ভাড়া' : 'Stoppage Fare Calculator'}
+          </Text>
+          <Text style={{ color: colors.textSecondary, fontSize: 12, marginBottom: 12 }}>
+            {lang === 'bn' ? 'নিচে স্টপ নির্বাচন করে সঠিক ভাড়া দেখুন' : 'Select stops to calculate official government fare'}
+          </Text>
+          
+          <View style={styles.calcRow}>
+             <View style={{ flex: 1 }}>
+                <Text style={styles.calcLabel}>{labels.from}</Text>
+                <View style={[styles.calcSelect, { backgroundColor: colors.input, borderColor: colors.divider }]}>
+                   <Text numberOfLines={1} style={{ color: colors.text, fontSize: 13 }}>{getStopName(allStops[0], lang)}</Text>
+                </View>
+             </View>
+             <View style={{ width: 30, alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
+                <Text style={{ color: colors.textSecondary }}>→</Text>
+             </View>
+             <View style={{ flex: 1 }}>
+                <Text style={styles.calcLabel}>{labels.to}</Text>
+                <View style={[styles.calcSelect, { backgroundColor: colors.input, borderColor: colors.divider }]}>
+                   <Text numberOfLines={1} style={{ color: colors.text, fontSize: 13 }}>{getStopName(allStops[allStops.length-1], lang)}</Text>
+                </View>
+             </View>
+          </View>
+
+          <Divider style={{ marginVertical: 15, backgroundColor: colors.divider }} />
+
+          <View style={styles.calcResultRow}>
+             <View>
+                <Text style={[styles.calcTotalLabel, { color: colors.textSecondary }]}>{lang === 'bn' ? 'মোট ভাড়া' : 'Total Fare'}</Text>
+                <Text style={[styles.calcTotalAmount, { color: COLORS.success }]}>{formatFare(calcDistanceFare((allStops.length - 1) * 1.5))}</Text>
+             </View>
+             <View style={{ alignItems: 'flex-end' }}>
+                <Text style={[styles.calcTotalLabel, { color: colors.textSecondary, textAlign: 'right' }]}>{labels.distance}</Text>
+                <Text style={[styles.calcTotalAmount, { color: colors.text, textAlign: 'right', fontSize: 18 }]}>{( (allStops.length - 1) * 1.5 ).toFixed(1)} km</Text>
+             </View>
+          </View>
+          
+          <Text style={{ fontSize: 10, color: colors.textSecondary, marginTop: 10, fontStyle: 'italic' }}>
+            {lang === 'bn' 
+              ? '* সরকারি অনুমোদিত হার (২.৪৫ টাকা/কিমি) ও সর্বনিম্ন ভাড়া ১০ টাকা অনুযায়ী হিসাবকৃত' 
+              : '* Calculated based on official Govt. rate (2.45 BDT/KM) and 10 BDT min fare'}
+          </Text>
+        </Card.Content>
+      </Card>
+
       {/* Direction info */}
-      <Card style={[styles.infoCard, { backgroundColor: colors.card, marginBottom: 30 }]} mode="elevated">
+      <Card style={[styles.infoCard, { backgroundColor: colors.card, marginVertical: 12, marginBottom: 30 }]} mode="elevated">
         <Card.Content>
           <View style={styles.infoRow}>
             <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>
@@ -159,7 +208,7 @@ export default function RouteDetailScreen() {
               <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>
                 {lang === 'bn' ? 'নোট' : 'Notes'}
               </Text>
-              <Text style={{ color: colors.text, flex: 1, textAlign: 'right' }}>{bus.notes}</Text>
+              <Text style={{ color: colors.text, flex: 1, textAlign: 'right', fontSize: 13 }}>{bus.notes}</Text>
             </View>
           ) : null}
         </Card.Content>
@@ -275,5 +324,36 @@ const styles = StyleSheet.create({
   infoLabel: {
     fontSize: 14,
     fontWeight: '500',
+  },
+  calcRow: {
+    flexDirection: 'row',
+    marginBottom: 5,
+  },
+  calcLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    marginBottom: 4,
+    textTransform: 'uppercase',
+    opacity: 0.6,
+  },
+  calcSelect: {
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    height: 40,
+    justifyContent: 'center',
+  },
+  calcResultRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  calcTotalLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  calcTotalAmount: {
+    fontSize: 24,
+    fontWeight: '800',
   },
 });

@@ -6,10 +6,18 @@ import { FARE_PER_KM, MIN_FARE } from '../constants';
 import Fuse from 'fuse.js';
 import type { Stop, SearchResult } from '../types';
 
-/** Calculate distance-based fare */
+/** Calculate distance-based fare using official Government rates */
 export function calcDistanceFare(distanceKm: number): number {
   const fare = distanceKm * FARE_PER_KM;
-  return Math.max(Math.round(fare), MIN_FARE);
+  // Official minimum fare is 10 BDT
+  return Math.max(Math.ceil(fare / 2) * 2, MIN_FARE); 
+}
+
+/** Calculate fare between two specific points on a route */
+export function calculateStoppageFare(numStages: number): number {
+  // Average distance between Dhaka bus stages is approx 1.5km
+  const estimatedDistance = numStages * 1.5;
+  return calcDistanceFare(estimatedDistance);
 }
 
 /** Format fare as BDT string */
