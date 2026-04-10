@@ -14,37 +14,12 @@ import {
 } from 'react-native';
 import { Text, Card, Chip, Divider, IconButton } from 'react-native-paper';
 import { useAppStore } from '../store';
+import { useThemeColors, useLabel } from '../hooks';
+export { useThemeColors, useLabel };
 import { COLORS, ENGLISH_LABELS, BENGALI_LABELS } from '../constants';
 import { getStopName, formatFare, calcDistanceFare, formatDistance } from '../utils';
 import type { Stop, SearchResult } from '../types';
-
-// ==================== THEME HOOK ====================
-
-export function useThemeColors() {
-  const themeMode = useAppStore(s => s.themeMode);
-  const isDark = themeMode === 'dark';
-
-  return {
-    isDark,
-    bg: isDark ? COLORS.darkBackground : COLORS.background,
-    surface: isDark ? COLORS.darkSurface : COLORS.surface,
-    text: isDark ? COLORS.darkText : COLORS.text,
-    textSecondary: isDark ? COLORS.darkTextSecondary : COLORS.textSecondary,
-    divider: isDark ? COLORS.darkDivider : COLORS.divider,
-    primary: COLORS.primary,
-    primaryLight: COLORS.primaryLight,
-    accent: COLORS.accent,
-    card: isDark ? '#252525' : '#FFFFFF',
-    input: isDark ? '#2A2A2A' : '#F0F0F0',
-    inputText: isDark ? '#FAFAFA' : '#212121',
-    placeholder: isDark ? '#888888' : '#999999',
-  };
-}
-
-export function useLabel(key: string): string {
-  const lang = useAppStore(s => s.language);
-  return lang === 'bn' ? BENGALI_LABELS[key] || ENGLISH_LABELS[key] || key : ENGLISH_LABELS[key] || key;
-}
+export { ChatWidget } from './ChatWidget';
 
 // ==================== STOP AUTOCOMPLETE ====================
 

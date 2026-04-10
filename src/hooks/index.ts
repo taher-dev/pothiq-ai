@@ -6,8 +6,37 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Fuse from 'fuse.js';
 import type { Stop, Bus, Route, SearchResult } from '../types';
 import { useAppStore } from '../store';
+import { COLORS, BENGALI_LABELS, ENGLISH_LABELS } from '../constants';
 import * as db from '../db/database';
 import { createStopFuse, fuzzySearchStops } from '../utils';
+
+// ==================== THEME HOOK ====================
+
+export function useThemeColors() {
+  const themeMode = useAppStore(s => s.themeMode);
+  const isDark = themeMode === 'dark';
+
+  return {
+    isDark,
+    bg: isDark ? COLORS.darkBackground : COLORS.background,
+    surface: isDark ? COLORS.darkSurface : COLORS.surface,
+    text: isDark ? COLORS.darkText : COLORS.text,
+    textSecondary: isDark ? COLORS.darkTextSecondary : COLORS.textSecondary,
+    divider: isDark ? COLORS.darkDivider : COLORS.divider,
+    primary: COLORS.primary,
+    primaryLight: COLORS.primaryLight,
+    accent: COLORS.accent,
+    card: isDark ? '#252525' : '#FFFFFF',
+    input: isDark ? '#2A2A2A' : '#F0F0F0',
+    inputText: isDark ? '#FAFAFA' : '#212121',
+    placeholder: isDark ? '#888888' : '#999999',
+  };
+}
+
+export function useLabel(key: string): string {
+  const lang = useAppStore(s => s.language);
+  return lang === 'bn' ? BENGALI_LABELS[key] || ENGLISH_LABELS[key] || key : ENGLISH_LABELS[key] || key;
+}
 
 /** Hook to load all stops */
 export function useStops() {

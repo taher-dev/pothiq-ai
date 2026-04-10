@@ -15,6 +15,7 @@ import HomeScreen from '../screens/HomeScreen';
 import RouteDetailScreen from '../screens/RouteDetailScreen';
 import RoutesBrowserScreen, { BusRoutesScreen, StopRoutesScreen } from '../screens/RoutesBrowserScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import SOSScreen from '../screens/SOSScreen';
 import AdminLoginScreen from '../screens/AdminLoginScreen';
 import AdminDashboardScreen from '../screens/AdminDashboardScreen';
 import { ManageRoutesScreen, ManageBusesScreen, ManageStopsScreen } from '../screens/ManageScreens';
@@ -203,13 +204,14 @@ export default function AppNavigator() {
           tabBarStyle: {
             backgroundColor: colors.surface,
             borderTopColor: colors.divider,
-            paddingBottom: 6,
-            paddingTop: 6,
-            height: 60,
+            paddingBottom: 16,
+            paddingTop: 4,
+            height: 70,
           },
           tabBarLabelStyle: {
             fontSize: 12,
             fontWeight: '600',
+            marginBottom: 4,
           },
         }}
       >
@@ -230,6 +232,16 @@ export default function AppNavigator() {
             tabBarLabel: labels.routes,
             tabBarIcon: ({ focused }) => (
               <TabIcon emoji="🗺️" focused={focused} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="SOSTab"
+          component={SOSScreen}
+          options={{
+            tabBarLabel: labels.sos,
+            tabBarIcon: ({ focused }) => (
+              <TabIcon emoji="🚨" focused={focused} />
             ),
           }}
         />

@@ -9,6 +9,7 @@ import AppNavigator from './src/navigation';
 import { useAppStore } from './src/store';
 import { initializeDatabase } from './src/db/database';
 import { COLORS } from './src/constants';
+import { ChatWidget } from './src/components';
 
 export default function App() {
   const [dbReady, setDbReady] = useState(false);
@@ -45,6 +46,7 @@ export default function App() {
       <PaperProvider theme={theme}>
         <StatusBar style={themeMode === 'dark' ? 'light' : 'dark'} />
         <AppNavigator />
+        <ChatWidget />
         <Toast />
       </PaperProvider>
     </SafeAreaProvider>

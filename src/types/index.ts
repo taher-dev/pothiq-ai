@@ -77,6 +77,7 @@ export interface BackupData {
 export type RootTabParamList = {
   HomeTab: undefined;
   RoutesTab: undefined;
+  SOSTab: undefined;
   SettingsTab: undefined;
 };
 
