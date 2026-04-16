@@ -18,17 +18,10 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
 export async function initializeDatabase(): Promise<void> {
   const database = await getDatabase();
 
-  // Drop tables to handle schema changes (Safe since we re-seed)
-  await database.execAsync(`
-    DROP TABLE IF EXISTS fare_matrix;
-    DROP TABLE IF EXISTS routes;
-    DROP TABLE IF EXISTS buses;
-    DROP TABLE IF EXISTS stops;
-  `);
-
   // Create tables
   await database.execAsync(`
     PRAGMA journal_mode = WAL;
+    PRAGMA foreign_keys = ON;
 
     CREATE TABLE IF NOT EXISTS stops (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,7 +51,7 @@ export async function initializeDatabase(): Promise<void> {
       stops_order TEXT NOT NULL DEFAULT '[]',
       direction TEXT NOT NULL DEFAULT 'both',
       is_active INTEGER NOT NULL DEFAULT 1,
-      FOREIGN KEY (bus_id) REFERENCES buses(id),
+      FOREIGN KEY (bus_id) REFERENCES buses(id) ON DELETE CASCADE,
       FOREIGN KEY (start_stop_id) REFERENCES stops(id),
       FOREIGN KEY (end_stop_id) REFERENCES stops(id)
     );
@@ -70,22 +63,22 @@ export async function initializeDatabase(): Promise<void> {
       to_id INTEGER NOT NULL,
       fare INTEGER NOT NULL,
       distance_km REAL DEFAULT 0,
-      FOREIGN KEY (bus_id) REFERENCES buses(id),
+      FOREIGN KEY (bus_id) REFERENCES buses(id) ON DELETE CASCADE,
       FOREIGN KEY (from_id) REFERENCES stops(id),
       FOREIGN KEY (to_id) REFERENCES stops(id)
     );
   `);
 
-  // Clear everything for a clean reset (Redundant but safe)
-  await database.execAsync('DELETE FROM fare_matrix; DELETE FROM routes; DELETE FROM buses; DELETE FROM stops;');
-
-  // Clear everything for a clean reset
-  await database.execAsync('DELETE FROM fare_matrix; DELETE FROM routes; DELETE FROM buses; DELETE FROM stops;');
+  const counts = await getCounts();
+  if (counts.routes > 0 || counts.buses > 0 || counts.stops > 0) {
+    return;
+  }
 
   const { FARE_TEMPLATES } = require('./fareTemplates');
   
-  // Track stops by name to avoid duplicates within templates
+  // Track stops by normalized name to avoid duplicates
   const stopMap: Record<string, number> = {};
+  const normalizeName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   for (const [busName, template] of Object.entries(FARE_TEMPLATES as any)) {
       // 1. Insert Bus
@@ -99,14 +92,15 @@ export async function initializeDatabase(): Promise<void> {
       const stopIds: number[] = [];
       for (const stopObj of (template as any).stops) {
           const sName = stopObj.name_en;
-          if (!stopMap[sName.toLowerCase()]) {
+          const norm = normalizeName(sName);
+          if (!stopMap[norm]) {
              const res = await database.runAsync(
                'INSERT INTO stops (name_en, name_bn, area) VALUES (?, ?, ?)',
                [sName, stopObj.name_bn || sName, stopObj.area || 'Unknown']
              );
-             stopMap[sName.toLowerCase()] = res.lastInsertRowId;
+             stopMap[norm] = res.lastInsertRowId;
           }
-          stopIds.push(stopMap[sName.toLowerCase()]);
+          stopIds.push(stopMap[norm]);
       }
 
       // 3. Create main route record
@@ -128,8 +122,8 @@ export async function initializeDatabase(): Promise<void> {
       // 4. Create fare matrix (Bidirectional Interchangeable)
       for (const fareEntry of (template as any).fares) {
           const parts = fareEntry.from_to.split(' - ');
-          const fromId = stopMap[parts[0].toLowerCase()];
-          const toId = stopMap[parts[1].toLowerCase()];
+          const fromId = stopMap[normalizeName(parts[0])];
+          const toId = stopMap[normalizeName(parts[1])];
           
           if (fromId && toId) {
              // Forward
@@ -163,9 +157,12 @@ export async function getStopById(id: number): Promise<Stop | null> {
 
 export async function insertStop(stop: Omit<Stop, 'id' | 'created_at'>): Promise<number> {
   const database = await getDatabase();
+  const normalizedNameEn = stop.name_en.trim();
+  const normalizedNameBn = stop.name_bn.trim();
+  const normalizedArea = stop.area.trim();
   const result = await database.runAsync(
     'INSERT INTO stops (name_en, name_bn, area, lat, lng) VALUES (?, ?, ?, ?, ?)',
-    [stop.name_en, stop.name_bn, stop.area, stop.lat || 0, stop.lng || 0]
+    [normalizedNameEn, normalizedNameBn, normalizedArea, stop.lat || 0, stop.lng || 0]
   );
   return result.lastInsertRowId;
 }
@@ -175,9 +172,9 @@ export async function updateStop(id: number, stop: Partial<Stop>): Promise<void>
   const fields: string[] = [];
   const values: any[] = [];
 
-  if (stop.name_en !== undefined) { fields.push('name_en = ?'); values.push(stop.name_en); }
-  if (stop.name_bn !== undefined) { fields.push('name_bn = ?'); values.push(stop.name_bn); }
-  if (stop.area !== undefined) { fields.push('area = ?'); values.push(stop.area); }
+  if (stop.name_en !== undefined) { fields.push('name_en = ?'); values.push(stop.name_en.trim()); }
+  if (stop.name_bn !== undefined) { fields.push('name_bn = ?'); values.push(stop.name_bn.trim()); }
+  if (stop.area !== undefined) { fields.push('area = ?'); values.push(stop.area.trim()); }
   if (stop.lat !== undefined) { fields.push('lat = ?'); values.push(stop.lat); }
   if (stop.lng !== undefined) { fields.push('lng = ?'); values.push(stop.lng); }
 
@@ -189,6 +186,15 @@ export async function updateStop(id: number, stop: Partial<Stop>): Promise<void>
 
 export async function deleteStop(id: number): Promise<void> {
   const database = await getDatabase();
+  const allRoutes = await database.getAllAsync<Route>('SELECT id, stops_order FROM routes');
+  for (const route of allRoutes) {
+    const stopIds = parseStopsOrder(route.stops_order).map(Number);
+    if (stopIds.includes(id)) {
+      await database.runAsync('DELETE FROM routes WHERE id = ?', [route.id]);
+    }
+  }
+  await database.runAsync('DELETE FROM fare_matrix WHERE from_id = ? OR to_id = ?', [id, id]);
+  await database.runAsync('DELETE FROM routes WHERE start_stop_id = ? OR end_stop_id = ?', [id, id]);
   await database.runAsync('DELETE FROM stops WHERE id = ?', [id]);
 }
 
@@ -206,9 +212,12 @@ export async function getBusById(id: number): Promise<Bus | null> {
 
 export async function insertBus(bus: Omit<Bus, 'id'>): Promise<number> {
   const database = await getDatabase();
+  const normalizedName = bus.name.trim();
+  const normalizedOperator = bus.operator.trim();
+  const normalizedType = bus.type.trim();
   const result = await database.runAsync(
     'INSERT INTO buses (name, operator, type, notes) VALUES (?, ?, ?, ?)',
-    [bus.name, bus.operator, bus.type, bus.notes || '']
+    [normalizedName, normalizedOperator, normalizedType, bus.notes?.trim() || '']
   );
   return result.lastInsertRowId;
 }
@@ -218,10 +227,10 @@ export async function updateBus(id: number, bus: Partial<Bus>): Promise<void> {
   const fields: string[] = [];
   const values: any[] = [];
 
-  if (bus.name !== undefined) { fields.push('name = ?'); values.push(bus.name); }
-  if (bus.operator !== undefined) { fields.push('operator = ?'); values.push(bus.operator); }
-  if (bus.type !== undefined) { fields.push('type = ?'); values.push(bus.type); }
-  if (bus.notes !== undefined) { fields.push('notes = ?'); values.push(bus.notes); }
+  if (bus.name !== undefined) { fields.push('name = ?'); values.push(bus.name.trim()); }
+  if (bus.operator !== undefined) { fields.push('operator = ?'); values.push(bus.operator.trim()); }
+  if (bus.type !== undefined) { fields.push('type = ?'); values.push(bus.type.trim()); }
+  if (bus.notes !== undefined) { fields.push('notes = ?'); values.push(bus.notes.trim()); }
 
   if (fields.length > 0) {
     values.push(id);
@@ -231,6 +240,8 @@ export async function updateBus(id: number, bus: Partial<Bus>): Promise<void> {
 
 export async function deleteBus(id: number): Promise<void> {
   const database = await getDatabase();
+  await database.runAsync('DELETE FROM fare_matrix WHERE bus_id = ?', [id]);
+  await database.runAsync('DELETE FROM routes WHERE bus_id = ?', [id]);
   await database.runAsync('DELETE FROM buses WHERE id = ?', [id]);
 }
 

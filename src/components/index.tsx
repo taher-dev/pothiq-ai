@@ -2,7 +2,7 @@
 // Pothiq AI — Reusable UI Components
 // ============================================
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
   View,
   TextInput,
@@ -11,6 +11,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import { Text, Card, Chip, Divider, IconButton } from 'react-native-paper';
 import { useAppStore } from '../store';
@@ -36,12 +37,16 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Stop[]>([]);
   const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef<TextInput>(null);
   const lang = useAppStore(s => s.language);
   const colors = useThemeColors();
 
   useEffect(() => {
     if (selectedStop) {
       setQuery(getStopName(selectedStop, lang));
+    } else {
+      setQuery('');
+      setSuggestions([]);
     }
   }, [selectedStop, lang]);
 
@@ -52,6 +57,7 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
       setSuggestions(results);
     } else {
       setSuggestions([]);
+      onSelect(null);
     }
   };
 
@@ -65,19 +71,28 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
   const handleClear = () => {
     setQuery('');
     setSuggestions([]);
-    onSelect(null as any);
+    onSelect(null);
+    setIsFocused(true);
+    // Refocus the input so the user can immediately start typing again
+    setTimeout(() => inputRef.current?.focus(), 50);
   };
 
   return (
     <View style={styles.autocompleteContainer}>
       <View style={[styles.inputRow, { backgroundColor: colors.input }]}>
         <TextInput
+          ref={inputRef}
           style={[styles.input, { color: colors.inputText }]}
           placeholder={placeholder}
           placeholderTextColor={colors.placeholder}
           value={query}
           onChangeText={handleChangeText}
           onFocus={() => setIsFocused(true)}
+          onBlur={() => {
+            // Delay hiding suggestions so that a tap or scroll on a suggestion can register
+            // Increased timeout to 500ms to allow smooth scrolling on slower devices
+            setTimeout(() => setIsFocused(false), 500);
+          }}
           autoFocus={autoFocus}
         />
         {query.length > 0 && (
@@ -85,17 +100,32 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
         )}
       </View>
       {isFocused && suggestions.length > 0 && (
-        <View style={[styles.suggestionsList, { backgroundColor: colors.surface, borderColor: colors.divider }]}>
-          {suggestions.map((stop, idx) => (
-            <TouchableOpacity
-              key={stop.id}
-              style={[styles.suggestionItem, idx < suggestions.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.divider }]}
-              onPress={() => handleSelect(stop)}
-            >
-              <Text style={[styles.suggestionName, { color: colors.text }]}>{getStopName(stop, lang)}</Text>
-              <Text style={[styles.suggestionArea, { color: colors.textSecondary }]}>{stop.area}</Text>
-            </TouchableOpacity>
-          ))}
+        <View 
+          style={[styles.suggestionsList, { backgroundColor: colors.surface, borderColor: colors.divider }]}
+          // On Android, absolute views outside their parents aren't always touchable.
+          // This ensures the container captures touches before the parent ScrollView.
+          onStartShouldSetResponderCapture={() => true}
+        >
+          <ScrollView
+            keyboardShouldPersistTaps="always"
+            nestedScrollEnabled={true}
+            style={styles.suggestionsScroll}
+            keyboardDismissMode="none"
+          >
+            {suggestions.map((stop, idx) => (
+              <TouchableOpacity
+                key={stop.id}
+                style={[
+                  styles.suggestionItem, 
+                  idx < suggestions.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.divider }
+                ]}
+                onPress={() => handleSelect(stop)}
+              >
+                <Text style={[styles.suggestionName, { color: colors.text }]}>{getStopName(stop, lang)}</Text>
+                <Text style={[styles.suggestionArea, { color: colors.textSecondary }]}>{stop.area}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
       )}
     </View>
@@ -270,13 +300,16 @@ const styles = StyleSheet.create({
     right: 0,
     borderRadius: 12,
     borderWidth: 1,
-    maxHeight: 200,
+    overflow: 'hidden',
     elevation: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
     zIndex: 100,
+  },
+  suggestionsScroll: {
+    maxHeight: 180, // ~4 items visible
   },
   suggestionItem: {
     paddingVertical: 12,

@@ -155,6 +155,7 @@ export function ManageBusesScreen() {
   const labels = lang === 'bn' ? BENGALI_LABELS : ENGLISH_LABELS;
 
   const [buses, setBuses] = useState<Bus[]>([]);
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -189,6 +190,16 @@ export function ManageBusesScreen() {
     );
   };
 
+  const filteredBuses = buses.filter(bus => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      bus.name.toLowerCase().includes(q) ||
+      bus.operator.toLowerCase().includes(q) ||
+      bus.type.toLowerCase().includes(q)
+    );
+  });
+
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       <TouchableOpacity
@@ -197,12 +208,21 @@ export function ManageBusesScreen() {
       >
         <Text style={styles.addBtnText}>➕ {labels.add} {labels.bus}</Text>
       </TouchableOpacity>
+      <View style={styles.searchWrap}>
+        <TextInput
+          style={[styles.searchInput, { backgroundColor: colors.input, color: colors.inputText }]}
+          placeholder={lang === 'bn' ? 'নাম/অপারেটর দিয়ে খুঁজুন' : 'Find by name/operator'}
+          placeholderTextColor={colors.placeholder}
+          value={query}
+          onChangeText={setQuery}
+        />
+      </View>
 
       {loading ? (
         <ActivityIndicator style={{ marginTop: 40 }} color={COLORS.primary} size="large" />
       ) : (
         <FlatList
-          data={buses}
+          data={filteredBuses}
           keyExtractor={item => item.id.toString()}
           contentContainerStyle={{ paddingBottom: 20 }}
           renderItem={({ item }) => (
@@ -250,6 +270,7 @@ export function ManageStopsScreen() {
   const labels = lang === 'bn' ? BENGALI_LABELS : ENGLISH_LABELS;
 
   const [stops, setStops] = useState<Stop[]>([]);
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
@@ -284,6 +305,16 @@ export function ManageStopsScreen() {
     );
   };
 
+  const filteredStops = stops.filter(stop => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      stop.name_en.toLowerCase().includes(q) ||
+      stop.name_bn.toLowerCase().includes(q) ||
+      stop.area.toLowerCase().includes(q)
+    );
+  });
+
   return (
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       <TouchableOpacity
@@ -292,12 +323,21 @@ export function ManageStopsScreen() {
       >
         <Text style={styles.addBtnText}>➕ {labels.add} {labels.stop}</Text>
       </TouchableOpacity>
+      <View style={styles.searchWrap}>
+        <TextInput
+          style={[styles.searchInput, { backgroundColor: colors.input, color: colors.inputText }]}
+          placeholder={lang === 'bn' ? 'বানান/এলাকা দিয়ে খুঁজুন' : 'Find by spelling or area'}
+          placeholderTextColor={colors.placeholder}
+          value={query}
+          onChangeText={setQuery}
+        />
+      </View>
 
       {loading ? (
         <ActivityIndicator style={{ marginTop: 40 }} color={COLORS.primary} size="large" />
       ) : (
         <FlatList
-          data={stops}
+          data={filteredStops}
           keyExtractor={item => item.id.toString()}
           contentContainerStyle={{ paddingBottom: 20 }}
           renderItem={({ item }) => (
@@ -349,6 +389,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginBottom: 8,
     borderRadius: 12,
+  },
+  searchWrap: {
+    marginHorizontal: 12,
+    marginBottom: 8,
+  },
+  searchInput: {
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
   },
   cardRow: {
     flexDirection: 'row',

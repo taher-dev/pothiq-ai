@@ -80,14 +80,26 @@ export function RouteFormScreen() {
       Toast.show({ type: 'error', text1: labels.error, text2: lang === 'bn' ? 'সব ফিল্ড পূরণ করুন' : 'Fill all required fields' });
       return;
     }
+    if (startStopId === endStopId) {
+      Toast.show({ type: 'error', text1: labels.error, text2: lang === 'bn' ? 'শুরু এবং শেষ স্টপ ভিন্ন হতে হবে' : 'Start and end stop must be different' });
+      return;
+    }
+    const fare = parseFloat(fixedFare);
+    const distance = parseFloat(distanceKm);
+    if (Number.isNaN(fare) || Number.isNaN(distance) || fare <= 0 || distance <= 0) {
+      Toast.show({ type: 'error', text1: labels.error, text2: lang === 'bn' ? 'ভাড়া এবং দূরত্ব সঠিক দিন' : 'Enter valid fare and distance' });
+      return;
+    }
     setSaving(true);
+    const orderedStops = selectedStopIds.length > 0 ? selectedStopIds : [startStopId, endStopId];
+    const normalizedStops = Array.from(new Set([startStopId, ...orderedStops, endStopId]));
     const data = {
       bus_id: busId,
       start_stop_id: startStopId,
       end_stop_id: endStopId,
-      fixed_fare: parseFloat(fixedFare),
-      distance_km: parseFloat(distanceKm),
-      stops_order: JSON.stringify(selectedStopIds.length > 0 ? selectedStopIds : [startStopId, endStopId]),
+      fixed_fare: fare,
+      distance_km: distance,
+      stops_order: JSON.stringify(normalizedStops),
       direction,
       is_active: isActive ? 1 : 0,
     };
@@ -142,7 +154,7 @@ export function RouteFormScreen() {
           {/* Start stop */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>{labels.from} *</Text>
           <View style={styles.selectorRow}>
-            {stops.slice(0, 30).map(s => (
+            {stops.map(s => (
               <TouchableOpacity
                 key={s.id}
                 style={[styles.selectorChip, { backgroundColor: startStopId === s.id ? COLORS.success : colors.input }]}
@@ -158,7 +170,7 @@ export function RouteFormScreen() {
           {/* End stop */}
           <Text style={[styles.label, { color: colors.textSecondary }]}>{labels.to} *</Text>
           <View style={styles.selectorRow}>
-            {stops.slice(0, 30).map(s => (
+            {stops.map(s => (
               <TouchableOpacity
                 key={s.id}
                 style={[styles.selectorChip, { backgroundColor: endStopId === s.id ? COLORS.error : colors.input }]}
@@ -288,15 +300,19 @@ export function BusFormScreen() {
 
   const handleSave = async () => {
     refreshActivity();
-    if (!name || !operator || !type) {
+    const cleanedName = name.trim();
+    const cleanedOperator = operator.trim();
+    const cleanedType = type.trim();
+    const cleanedNotes = notes.trim();
+    if (!cleanedName || !cleanedOperator || !cleanedType) {
       Toast.show({ type: 'error', text1: labels.error, text2: lang === 'bn' ? 'সব ফিল্ড পূরণ করুন' : 'Fill all required fields' });
       return;
     }
     setSaving(true);
     if (busId) {
-      await db.updateBus(busId, { name, operator, type, notes });
+      await db.updateBus(busId, { name: cleanedName, operator: cleanedOperator, type: cleanedType, notes: cleanedNotes });
     } else {
-      await db.insertBus({ name, operator, type, notes });
+      await db.insertBus({ name: cleanedName, operator: cleanedOperator, type: cleanedType, notes: cleanedNotes });
     }
     setSaving(false);
     Toast.show({ type: 'success', text1: '✅', text2: lang === 'bn' ? 'বাস সংরক্ষিত' : 'Bus saved' });
@@ -385,15 +401,18 @@ export function StopFormScreen() {
 
   const handleSave = async () => {
     refreshActivity();
-    if (!nameEn || !nameBn || !area) {
+    const cleanedNameEn = nameEn.trim();
+    const cleanedNameBn = nameBn.trim();
+    const cleanedArea = area.trim();
+    if (!cleanedNameEn || !cleanedNameBn || !cleanedArea) {
       Toast.show({ type: 'error', text1: labels.error, text2: lang === 'bn' ? 'সব ফিল্ড পূরণ করুন' : 'Fill all required fields' });
       return;
     }
     setSaving(true);
     const data = {
-      name_en: nameEn,
-      name_bn: nameBn,
-      area,
+      name_en: cleanedNameEn,
+      name_bn: cleanedNameBn,
+      area: cleanedArea,
       lat: parseFloat(lat) || 0,
       lng: parseFloat(lng) || 0,
     };

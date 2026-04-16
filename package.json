@@ -19,6 +19,7 @@
     "bcryptjs": "^3.0.3",
     "expo": "~55.0.13",
     "expo-av": "^16.0.8",
+    "expo-crypto": "~55.0.14",
     "expo-document-picker": "~55.0.13",
     "expo-file-system": "~55.0.16",
     "expo-location": "~55.1.8",
@@ -46,6 +47,7 @@
     "@types/papaparse": "^5.5.2",
     "@types/react": "~19.2.2",
     "@types/react-native-vector-icons": "^6.4.18",
+    "babel-preset-expo": "^55.0.17",
     "typescript": "~5.9.2"
   },
   "private": true

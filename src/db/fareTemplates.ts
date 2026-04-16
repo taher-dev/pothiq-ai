@@ -52,8 +52,8 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
     "operator": "Ayat Paribahan",
     "stops": [
       { "name_en": "Chiriyakhana", "name_bn": "চিড়িয়াখানা", "area": "Mirpur" },
-      { "name_en": "Mirpur-2", "name_bn": "মিরপুর-২", "area": "Mirpur" },
-      { "name_en": "Mirpur-10", "name_bn": "মিরপুর-১০", "area": "Mirpur" },
+      { "name_en": "Mirpur 2", "name_bn": "মিরপুর-২", "area": "Mirpur" },
+      { "name_en": "Mirpur 10", "name_bn": "মিরপুর-১০", "area": "Mirpur" },
       { "name_en": "Kazipara", "name_bn": "কাজীপাড়া", "area": "Mirpur" },
       { "name_en": "Shewrapara", "name_bn": "শেওড়াপাড়া", "area": "Mirpur" },
       { "name_en": "Agargaon", "name_bn": "আগারগাঁও", "area": "Agargaon" },
@@ -64,8 +64,8 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
       { "name_en": "Kamalapur", "name_bn": "কমলাপুর", "area": "Kamalapur" }
     ],
     "fares": [
-      { "from_to": "Chiriyakhana - Mirpur-2", "fare": 10, "km": 2.8 },
-      { "from_to": "Chiriyakhana - Mirpur-10", "fare": 10, "km": 3.4 },
+      { "from_to": "Chiriyakhana - Mirpur 2", "fare": 10, "km": 2.8 },
+      { "from_to": "Chiriyakhana - Mirpur 10", "fare": 10, "km": 3.4 },
       { "from_to": "Chiriyakhana - Kazipara", "fare": 12, "km": 4.8 },
       { "from_to": "Chiriyakhana - Shewrapara", "fare": 13, "km": 5.5 },
       { "from_to": "Chiriyakhana - Agargaon", "fare": 18, "km": 7.2 },
@@ -88,7 +88,7 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
       { "name_en": "Asad Gate", "name_bn": "আসাদ গেট", "area": "Mohammadpur" },
       { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
       { "name_en": "Kawran Bazar", "name_bn": "কাওরান বাজার", "area": "Tejgaon" },
-      { "name_en": "Shahbag", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
       { "name_en": "Press Club", "name_bn": "প্রেস ক্লাব", "area": "Ramna" },
       { "name_en": "Stadium", "name_bn": "স্টেডিয়াম", "area": "Motijheel" },
       { "name_en": "Ittefaq", "name_bn": "ইত্তেফাক", "area": "Motijheel" },
@@ -103,7 +103,7 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
       { "from_to": "Mirpur-1 - Asad Gate", "fare": 13, "km": 5.4 },
       { "from_to": "Mirpur-1 - Farmgate", "fare": 18, "km": 7.2 },
       { "from_to": "Mirpur-1 - Kawran Bazar", "fare": 20, "km": 8.2 },
-      { "from_to": "Mirpur-1 - Shahbag", "fare": 24, "km": 9.6 },
+      { "from_to": "Mirpur-1 - Shahbagh", "fare": 24, "km": 9.6 },
       { "from_to": "Mirpur-1 - Press Club", "fare": 28, "km": 11.3 },
       { "from_to": "Mirpur-1 - Stadium", "fare": 30, "km": 12.3 },
       { "from_to": "Mirpur-1 - Ittefaq", "fare": 38, "km": 15.4 },
@@ -121,8 +121,7 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
       { "name_en": "Tongi Bazar", "name_bn": "টঙ্গী বাজার", "area": "Tongi" },
       { "name_en": "Cherag Ali", "name_bn": "চেরাগ আলী", "area": "Tongi" },
       { "name_en": "Board Bazar", "name_bn": "বোর্ড বাজার", "area": "Gazipur" },
-      { "name_en": "Chourasta", "name_bn": "চৌরাস্তা", "area": "Gazipur" },
-      { "name_en": "Gazipur", "name_bn": "গাজীপুর", "area": "Gazipur" }
+      { "name_en": "Gazipur Chourasta", "name_bn": "গাজীপুর চৌরাস্তা", "area": "Gazipur" }
     ],
     "fares": [
       { "from_to": "Sayedabad - Malibagh", "fare": 10, "km": 4.0 },
@@ -132,8 +131,7 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
       { "from_to": "Sayedabad - Tongi Bazar", "fare": 59, "km": 24.0 },
       { "from_to": "Sayedabad - Cherag Ali", "fare": 66, "km": 27.0 },
       { "from_to": "Sayedabad - Board Bazar", "fare": 76, "km": 31.0 },
-      { "from_to": "Sayedabad - Chourasta", "fare": 91, "km": 37.0 },
-      { "from_to": "Sayedabad - Gazipur", "fare": 103, "km": 42.0 }
+      { "from_to": "Sayedabad - Gazipur Chourasta", "fare": 103, "km": 42.0 }
     ]
   },
   "Victor": {
@@ -143,8 +141,8 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
       { "name_en": "Naya Bazar", "name_bn": "নয়াবাজার", "area": "Old Dhaka" },
       { "name_en": "Golap Shah Mazar", "name_bn": "গোলাপ শাহ মাজার", "area": "Gulistan" },
       { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
-      { "name_en": "Malibaag Moor", "name_bn": "মালিবাগ মোড়", "area": "Malibagh" },
-      { "name_en": "Rampura Bridge", "name_bn": "রামপুরা ব্রিজ", "area": "Rampura" },
+      { "name_en": "Malibagh", "name_bn": "মালিবাগ", "area": "Malibagh" },
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
       { "name_en": "Shahjadpur", "name_bn": "শাহজাদপুর", "area": "Badda" },
       { "name_en": "Notun Bazar", "name_bn": "নতুন বাজার", "area": "Badda" },
       { "name_en": "Bashundhara", "name_bn": "বসুন্ধরা", "area": "Bhatara" },
@@ -203,17 +201,17 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
     "stops": [
       { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" },
       { "name_en": "Bashabo", "name_bn": "বাসাবো", "area": "Bashabo" },
-      { "name_en": "Malibaag Moor", "name_bn": "মালিবাগ মোড়", "area": "Malibagh" },
-      { "name_en": "Rampura Bridge", "name_bn": "রামপুরা ব্রিজ", "area": "Rampura" },
+      { "name_en": "Malibagh", "name_bn": "মালিবাগ", "area": "Malibagh" },
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
       { "name_en": "Badda", "name_bn": "বাড্ডা", "area": "Badda" },
       { "name_en": "Notun Bazar", "name_bn": "নতুন বাজার", "area": "Badda" },
       { "name_en": "Kuril Bishwa Road", "name_bn": "কুড়িল বিশ্বরোড", "area": "Kuril" },
       { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
       { "name_en": "Rajlakshmi", "name_bn": "রাজলক্ষ্মী", "area": "Uttara" },
-      { "name_en": "Azampur", "name_bn": "আজমপুর", "area": "Uttara" }
+      { "name_en": "Azimpur", "name_bn": "আজিমপুর", "area": "Azimpur" }
     ],
     "fares": [
-      { "from_to": "Jatrabari - Azampur", "fare": 54, "km": 22.0 }
+      { "from_to": "Jatrabari - Azimpur", "fare": 54, "km": 22.0 }
     ]
   },
   "Projapati": {
@@ -234,6 +232,377 @@ export const FARE_TEMPLATES: Record<string, BusTemplate> = {
     ],
     "fares": [
       { "from_to": "Bosila - Kamarpara", "fare": 69, "km": 28.0 }
+    ]
+  },
+  "Shikhor": {
+    "operator": "Shikhor Paribahan",
+    "stops": [
+      { "name_en": "Mirpur 12", "name_bn": "মিরপুর ১২", "area": "Mirpur" },
+      { "name_en": "Pallabi", "name_bn": "পল্লবী", "area": "Mirpur" },
+      { "name_en": "Mirpur 10", "name_bn": "মিরপুর ১০", "area": "Mirpur" },
+      { "name_en": "Agargaon", "name_bn": "আগারগাঁও", "area": "Agargaon" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Gulistan", "name_bn": "গুলিস্তান", "area": "Gulistan" },
+      { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 12 - Jatrabari", "fare": 49, "km": 20.0 }
+    ]
+  },
+  "Achim": {
+    "operator": "Achim Paribahan",
+    "stops": [
+      { "name_en": "Gabtoli", "name_bn": "গাবতলী", "area": "Gabtoli" },
+      { "name_en": "Technical", "name_bn": "টেকনিক্যাল", "area": "Mirpur" },
+      { "name_en": "Shyamoli", "name_bn": "শ্যামলী", "area": "Shyamoli" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Mohakhali", "name_bn": "মহাখালী", "area": "Mohakhali" },
+      { "name_en": "Gulshan 1", "name_bn": "গুলশান ১", "area": "Gulshan" },
+      { "name_en": "Badda", "name_bn": "বাড্ডা", "area": "Badda" },
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
+      { "name_en": "Banasree", "name_bn": "বনশ্রী", "area": "Rampura" },
+      { "name_en": "Demra Staff Quarter", "name_bn": "ডেমরা স্টাফ কোয়ার্টার", "area": "Demra" }
+    ],
+    "fares": [
+      { "from_to": "Gabtoli - Demra Staff Quarter", "fare": 62, "km": 25.0 }
+    ]
+  },
+  "Labbaik": {
+    "operator": "Labbaik Paribahan",
+    "stops": [
+      { "name_en": "Savar", "name_bn": "সাভার", "area": "Savar" },
+      { "name_en": "Gabtoli", "name_bn": "গাবতলী", "area": "Gabtoli" },
+      { "name_en": "Shyamoli", "name_bn": "শ্যামলী", "area": "Shyamoli" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Mogbazar", "name_bn": "মগবাজার", "area": "Mogbazar" },
+      { "name_en": "Malibagh", "name_bn": "মালিবাগ", "area": "Malibagh" },
+      { "name_en": "Sayedabad", "name_bn": "সায়েদাবাদ", "area": "Sayedabad" },
+      { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" },
+      { "name_en": "Sign Board", "name_bn": "সাইনবোর্ড", "area": "Jatrabari" }
+    ],
+    "fares": [
+      { "from_to": "Savar - Sign Board", "fare": 98, "km": 40.0 }
+    ]
+  },
+  "Basumoti": {
+    "operator": "Basumoti Paribahan",
+    "stops": [
+      { "name_en": "Gabtoli", "name_bn": "গাবতলী", "area": "Gabtoli" },
+      { "name_en": "Shyamoli", "name_bn": "শ্যামলী", "area": "Shyamoli" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Babubazar", "name_bn": "বাবুবাজার", "area": "Old Dhaka" },
+      { "name_en": "Maowa", "name_bn": "মাওয়া", "area": "Munshiganj" }
+    ],
+    "fares": [
+      { "from_to": "Gabtoli - Maowa", "fare": 111, "km": 45.0 }
+    ]
+  },
+  "Mirpur Mission": {
+    "operator": "Mirpur Mission Limited",
+    "stops": [
+      { "name_en": "Chiriyakhana", "name_bn": "চিড়িয়াখানা", "area": "Mirpur" },
+      { "name_en": "Mirpur 1", "name_bn": "মিরপুর ১", "area": "Mirpur" },
+      { "name_en": "Shyamoli", "name_bn": "শ্যামলী", "area": "Shyamoli" },
+      { "name_en": "Asad Gate", "name_bn": "আসাদ গেট", "area": "Mohammadpur" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Motijheel", "name_bn": "মতিঝিল", "area": "Motijheel" }
+    ],
+    "fares": [
+      { "from_to": "Chiriyakhana - Motijheel", "fare": 45, "km": 18.0 }
+    ]
+  },
+  "Welcome": {
+    "operator": "Welcome Paribahan",
+    "stops": [
+      { "name_en": "Abdullahpur", "name_bn": "আব্দুল্লাহপুর", "area": "Uttara" },
+      { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
+      { "name_en": "Kuril", "name_bn": "কুড়িল", "area": "Kuril" },
+      { "name_en": "Mohakhali", "name_bn": "মহাখালী", "area": "Mohakhali" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Motijheel", "name_bn": "মতিঝিল", "area": "Motijheel" }
+    ],
+    "fares": [
+      { "from_to": "Abdullahpur - Motijheel", "fare": 62, "km": 25.0 }
+    ]
+  },
+  "Salsabil": {
+    "operator": "Salsabil Paribahan",
+    "stops": [
+      { "name_en": "Abdullahpur", "name_bn": "আব্দুল্লাহপুর", "area": "Uttara" },
+      { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
+      { "name_en": "Notun Bazar", "name_bn": "নতুন বাজার", "area": "Badda" },
+      { "name_en": "Badda", "name_bn": "বাড্ডা", "area": "Badda" },
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
+      { "name_en": "Malibagh", "name_bn": "মালিবাগ", "area": "Malibagh" },
+      { "name_en": "Sayedabad", "name_bn": "সায়েদাবাদ", "area": "Sayedabad" },
+      { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" }
+    ],
+    "fares": [
+      { "from_to": "Abdullahpur - Jatrabari", "fare": 59, "km": 24.0 }
+    ]
+  },
+  "Anabil": {
+    "operator": "Anabil Super Service",
+    "stops": [
+      { "name_en": "Gazipur Chourasta", "name_bn": "গাজীপুর চৌরাস্তা", "area": "Gazipur" },
+      { "name_en": "Tongi Bazar", "name_bn": "টঙ্গী বাজার", "area": "Tongi" },
+      { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
+      { "name_en": "Notun Bazar", "name_bn": "নতুন বাজার", "area": "Badda" },
+      { "name_en": "Badda", "name_bn": "বাড্ডা", "area": "Badda" },
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
+      { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" },
+      { "name_en": "Sign Board", "name_bn": "সাইনবোর্ড", "area": "Jatrabari" }
+    ],
+    "fares": [
+      { "from_to": "Gazipur Chourasta - Sign Board", "fare": 86, "km": 35.0 }
+    ]
+  },
+  "Bikalpa": {
+    "operator": "Bikalpa Auto Service",
+    "stops": [
+      { "name_en": "Mirpur 12", "name_bn": "মিরপুর ১২", "area": "Mirpur" },
+      { "name_en": "Mirpur 10", "name_bn": "মিরপুর ১০", "area": "Mirpur" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Motijheel", "name_bn": "মতিঝিল", "area": "Motijheel" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 12 - Motijheel", "fare": 35, "km": 14.0 }
+    ]
+  },
+  "6 No Bus": {
+    "operator": "6 No Paribahan",
+    "stops": [
+      { "name_en": "Mirpur 12", "name_bn": "মিরপুর ১২", "area": "Mirpur" },
+      { "name_en": "Mirpur 10", "name_bn": "মিরপুর ১০", "area": "Mirpur" },
+      { "name_en": "Agargaon", "name_bn": "আগারগাঁও", "area": "Agargaon" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Kawran Bazar", "name_bn": "কাওরান বাজার", "area": "Tejgaon" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Motijheel", "name_bn": "মতিঝিল", "area": "Motijheel" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 12 - Motijheel", "fare": 37, "km": 15.0 }
+    ]
+  },
+  "8 No Bus": {
+    "operator": "8 No Paribahan",
+    "stops": [
+      { "name_en": "Gabtoli", "name_bn": "গাবতলী", "area": "Gabtoli" },
+      { "name_en": "Technical", "name_bn": "টেকনিক্যাল", "area": "Mirpur" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" }
+    ],
+    "fares": [
+      { "from_to": "Gabtoli - Jatrabari", "fare": 45, "km": 18.0 }
+    ]
+  },
+  "Thikana": {
+    "operator": "Thikana Paribahan",
+    "stops": [
+      { "name_en": "Savar", "name_bn": "সাভার", "area": "Savar" },
+      { "name_en": "Gabtoli", "name_bn": "গাবতলী", "area": "Gabtoli" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Sayedabad", "name_bn": "সায়েদাবাদ", "area": "Sayedabad" }
+    ],
+    "fares": [
+      { "from_to": "Savar - Sayedabad", "fare": 79, "km": 32.0 }
+    ]
+  },
+  "Agradut": {
+    "operator": "Agradut Paribahan",
+    "stops": [
+      { "name_en": "Mirpur 1", "name_bn": "মিরপুর ১", "area": "Mirpur" },
+      { "name_en": "Technical", "name_bn": "টেকনিক্যাল", "area": "Mirpur" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Motijheel", "name_bn": "মতিঝিল", "area": "Motijheel" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 1 - Motijheel", "fare": 35, "km": 14.0 }
+    ]
+  },
+  "Malancha": {
+    "operator": "Malancha Paribahan",
+    "stops": [
+      { "name_en": "Mohammadpur", "name_bn": "মোহাম্মদপুর", "area": "Mohammadpur" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Mohakhali", "name_bn": "মহাখালী", "area": "Mohakhali" },
+      { "name_en": "Gulshan 1", "name_bn": "গুলশান ১", "area": "Gulshan" },
+      { "name_en": "Banani", "name_bn": "বনানী", "area": "Banani" }
+    ],
+    "fares": [
+      { "from_to": "Mohammadpur - Banani", "fare": 30, "km": 12.0 }
+    ]
+  },
+  "Dishari": {
+    "operator": "Dishari Paribahan",
+    "stops": [
+      { "name_en": "Mohammadpur", "name_bn": "মোহাম্মদপুর", "area": "Mohammadpur" },
+      { "name_en": "Science Lab", "name_bn": "সায়েন্স ল্যাব", "area": "Dhanmondi" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Paltan", "name_bn": "পল্টন", "area": "Paltan" },
+      { "name_en": "Motijheel", "name_bn": "মতিঝিল", "area": "Motijheel" }
+    ],
+    "fares": [
+      { "from_to": "Mohammadpur - Motijheel", "fare": 25, "km": 10.0 }
+    ]
+  },
+  "Suprovat": {
+    "operator": "Suprovat Paribahan",
+    "stops": [
+      { "name_en": "Abdullahpur", "name_bn": "আব্দুল্লাহপুর", "area": "Uttara" },
+      { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
+      { "name_en": "Kuril", "name_bn": "কুড়িল", "area": "Kuril" },
+      { "name_en": "Badda", "name_bn": "বাড্ডা", "area": "Badda" },
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
+      { "name_en": "Malibagh", "name_bn": "মালিবাগ", "area": "Malibagh" },
+      { "name_en": "Gulistan", "name_bn": "গুলিস্তান", "area": "Gulistan" },
+      { "name_en": "Sadarghat", "name_bn": "সদরঘাট", "area": "Sadarghat" }
+    ],
+    "fares": [
+      { "from_to": "Abdullahpur - Sadarghat", "fare": 69, "km": 28.0 }
+    ]
+  },
+  "Azmeri Glory": {
+    "operator": "Azmeri Glory Limited",
+    "stops": [
+      { "name_en": "Abdullahpur", "name_bn": "আব্দুল্লাহপুর", "area": "Uttara" },
+      { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
+      { "name_en": "Notun Bazar", "name_bn": "নতুন বাজার", "area": "Badda" },
+      { "name_en": "Badda", "name_bn": "বাড্ডা", "area": "Badda" },
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
+      { "name_en": "Mogbazar", "name_bn": "মগবাজার", "area": "Mogbazar" },
+      { "name_en": "Sadarghat", "name_bn": "সদরঘাট", "area": "Sadarghat" }
+    ],
+    "fares": [
+      { "from_to": "Abdullahpur - Sadarghat", "fare": 64, "km": 26.0 }
+    ]
+  },
+  "Noor-E-Makkah": {
+    "operator": "Noor-E-Makkah Paribahan",
+    "stops": [
+      { "name_en": "Gabtoli", "name_bn": "গাবতলী", "area": "Gabtoli" },
+      { "name_en": "Technical", "name_bn": "টেকনিক্যাল", "area": "Mirpur" },
+      { "name_en": "Shyamoli", "name_bn": "শ্যামলী", "area": "Shyamoli" },
+      { "name_en": "Asad Gate", "name_bn": "আসাদ গেট", "area": "Mohammadpur" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" }
+    ],
+    "fares": [
+      { "from_to": "Gabtoli - Jatrabari", "fare": 45, "km": 18.0 }
+    ]
+  },
+  "Taltola": {
+    "operator": "Taltola Paribahan",
+    "stops": [
+      { "name_en": "Mirpur 10", "name_bn": "মিরপুর ১০", "area": "Mirpur" },
+      { "name_en": "Agargaon", "name_bn": "আগারগাঁও", "area": "Agargaon" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Gulistan", "name_bn": "গুলিস্তান", "area": "Gulistan" },
+      { "name_en": "Sadarghat", "name_bn": "সদরঘাট", "area": "Sadarghat" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 10 - Sadarghat", "fare": 37, "km": 15.0 }
+    ]
+  },
+  "Dewan": {
+    "operator": "Dewan Paribahan",
+    "stops": [
+      { "name_en": "Mirpur 1", "name_bn": "মিরপুর ১", "area": "Mirpur" },
+      { "name_en": "Technical", "name_bn": "টেকনিক্যাল", "area": "Mirpur" },
+      { "name_en": "Kallyanpur", "name_bn": "কল্যাণপুর", "area": "Kallyanpur" },
+      { "name_en": "Shyamoli", "name_bn": "শ্যামলী", "area": "Shyamoli" },
+      { "name_en": "Asad Gate", "name_bn": "আসাদ গেট", "area": "Mohammadpur" },
+      { "name_en": "Science Lab", "name_bn": "সায়েন্স ল্যাব", "area": "Dhanmondi" },
+      { "name_en": "Azimpur", "name_bn": "আজিমপুর", "area": "Azimpur" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 1 - Azimpur", "fare": 30, "km": 12.0 }
+    ]
+  },
+  "Borak": {
+    "operator": "Borak Paribahan",
+    "stops": [
+      { "name_en": "Abdullahpur", "name_bn": "আব্দুল্লাহপুর", "area": "Uttara" },
+      { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
+      { "name_en": "Mohakhali", "name_bn": "মহাখালী", "area": "Mohakhali" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Azimpur", "name_bn": "আজিমপুর", "area": "Azimpur" }
+    ],
+    "fares": [
+      { "from_to": "Abdullahpur - Azimpur", "fare": 59, "km": 24.0 }
+    ]
+  },
+  "Sakalpa": {
+    "operator": "Sakalpa Paribahan",
+    "stops": [
+      { "name_en": "Mirpur 12", "name_bn": "মিরপুর ১২", "area": "Mirpur" },
+      { "name_en": "Mirpur 1", "name_bn": "মিরপুর ১", "area": "Mirpur" },
+      { "name_en": "Technical", "name_bn": "টেকনিক্যাল", "area": "Mirpur" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Motijheel", "name_bn": "মতিঝিল", "area": "Motijheel" },
+      { "name_en": "Sayedabad", "name_bn": "সায়েদাবাদ", "area": "Sayedabad" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 12 - Sayedabad", "fare": 54, "km": 22.0 }
+    ]
+  },
+  "Champak": {
+    "operator": "Champak Paribahan",
+    "stops": [
+      { "name_en": "Gabtoli", "name_bn": "গাবতলী", "area": "Gabtoli" },
+      { "name_en": "Shyamoli", "name_bn": "শ্যামলী", "area": "Shyamoli" },
+      { "name_en": "Asad Gate", "name_bn": "আসাদ গেট", "area": "Mohammadpur" },
+      { "name_en": "Shahbagh", "name_bn": "শাহবাগ", "area": "Shahbagh" },
+      { "name_en": "Jatrabari", "name_bn": "যাত্রাবাড়ি", "area": "Jatrabari" }
+    ],
+    "fares": [
+      { "from_to": "Gabtoli - Jatrabari", "fare": 49, "km": 20.0 }
+    ]
+  },
+  "Prochesta": {
+    "operator": "Prochesta Paribahan",
+    "stops": [
+      { "name_en": "Rampura", "name_bn": "রামপুরা", "area": "Rampura" },
+      { "name_en": "Badda", "name_bn": "বাড্ডা", "area": "Badda" },
+      { "name_en": "Notun Bazar", "name_bn": "নতুন বাজার", "area": "Badda" },
+      { "name_en": "Kuril", "name_bn": "কুড়িল", "area": "Kuril" },
+      { "name_en": "Airport", "name_bn": "বিমানবন্দর", "area": "Uttara" },
+      { "name_en": "Abdullahpur", "name_bn": "আব্দুল্লাহপুর", "area": "Uttara" }
+    ],
+    "fares": [
+      { "from_to": "Rampura - Abdullahpur", "fare": 54, "km": 22.0 }
+    ]
+  },
+  "Raja City": {
+    "operator": "Raja City Paribahan",
+    "stops": [
+      { "name_en": "Mirpur 1", "name_bn": "মিরপুর ১", "area": "Mirpur" },
+      { "name_en": "Mirpur 10", "name_bn": "মিরপুর ১০", "area": "Mirpur" },
+      { "name_en": "Agargaon", "name_bn": "আগারগাঁও", "area": "Agargaon" },
+      { "name_en": "Farmgate", "name_bn": "ফার্মগেট", "area": "Farmgate" },
+      { "name_en": "Kamalapur", "name_bn": "কমলাপুর", "area": "Kamalapur" }
+    ],
+    "fares": [
+      { "from_to": "Mirpur 1 - Kamalapur", "fare": 35, "km": 14.0 }
     ]
   }
 };

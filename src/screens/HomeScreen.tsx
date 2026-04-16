@@ -231,6 +231,8 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 20,
     padding: 16,
+    zIndex: 10,
+    overflow: 'visible',
   },
   swapRow: {
     flexDirection: 'row',

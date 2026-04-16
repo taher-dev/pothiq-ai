@@ -15,9 +15,7 @@ import { Text, IconButton, Surface, Avatar, Divider, Card } from 'react-native-p
 import { COLORS } from '../constants';
 import { useThemeColors } from '../hooks';
 import { useAppStore } from '../store';
-import * as db from '../db/database';
-import { getStopName, formatFare } from '../utils';
-import type { Stop, SearchResult } from '../types';
+import { answerTransitQuery } from '../chat/rag';
 
 interface Message {
   id: string;
@@ -46,27 +44,7 @@ export function ChatWidget() {
 
   // AI Response Logic
   const generateResponse = async (query: string) => {
-    const q = query.toLowerCase();
-    
-    // 1. Search for stops
-    if (q.includes('go to') || q.includes('how to reach') || q.includes('route to')) {
-       // Logic to find routes (simulated)
-       return "To find the best route, please use the search bar on the home screen! I can also check specific fares for you.";
-    }
-
-    if (q.includes('raida')) {
-       return "Raida Paribahan goes from Dia Bari to Postagola. The full fare is 67 BDT.";
-    }
-
-    if (q.includes('fare') || q.includes('price')) {
-       return "Official Dhaka bus fare is 2.45 BDT/KM with a minimum fare of 10 BDT.";
-    }
-
-    if (q.includes('hello') || q.includes('hi')) {
-       return "Hi there! I'm your Pothiq AI assistant. How can I help you today?";
-    }
-
-    return "I'm still learning! You can ask about 'Raida bus', 'fares', or 'how to use the app'.";
+    return answerTransitQuery(query, lang);
   };
 
   const handleSend = async () => {
@@ -165,7 +143,7 @@ export function ChatWidget() {
             />
 
             {isTyping && (
-                <Text style={styles.typingText}>AI is thinking...</Text>
+                <Text style={styles.typingText}>{lang === 'bn' ? 'AI উত্তর তৈরি করছে...' : 'AI is retrieving answer...'}</Text>
             )}
 
             {/* Input Area */}

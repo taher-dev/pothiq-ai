@@ -5,14 +5,13 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
-import { hashSync, compareSync } from 'bcryptjs';
+import * as Crypto from 'expo-crypto';
 import type { Language, ThemeMode, AdminState, Stop, RecentSearch, AppSettings } from '../types';
 import {
   SETTINGS_KEY,
   RECENT_SEARCHES_KEY,
   ADMIN_PIN_KEY,
   DEFAULT_PIN,
-  BCRYPT_ROUNDS,
   MAX_FAILED_ATTEMPTS,
   LOCK_DURATION_MS,
   AUTO_LOCK_MS,
@@ -109,6 +108,19 @@ interface AdminStore extends AdminState {
   refreshActivity: () => void;
 }
 
+const PIN_HASH_NAMESPACE = 'pothiq_admin_pin_v1';
+
+async function hashPin(pin: string): Promise<string> {
+  return Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    `${PIN_HASH_NAMESPACE}:${pin}`
+  );
+}
+
+function isLegacyBcryptHash(hash: string): boolean {
+  return hash.startsWith('$2a$') || hash.startsWith('$2b$') || hash.startsWith('$2y$');
+}
+
 export const useAdminStore = create<AdminStore>((set, get) => ({
   isAuthenticated: false,
   lastActivity: 0,
@@ -119,7 +131,7 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
     try {
       const storedHash = await SecureStore.getItemAsync(ADMIN_PIN_KEY);
       if (!storedHash) {
-        const hash = hashSync(DEFAULT_PIN, BCRYPT_ROUNDS);
+        const hash = await hashPin(DEFAULT_PIN);
         await SecureStore.setItemAsync(ADMIN_PIN_KEY, hash);
       }
     } catch (e) {
@@ -127,7 +139,7 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
       try {
         const storedHash = await AsyncStorage.getItem(ADMIN_PIN_KEY);
         if (!storedHash) {
-          const hash = hashSync(DEFAULT_PIN, BCRYPT_ROUNDS);
+          const hash = await hashPin(DEFAULT_PIN);
           await AsyncStorage.setItem(ADMIN_PIN_KEY, hash);
         }
       } catch {}
@@ -156,7 +168,7 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
 
     if (!storedHash) {
       // First time — set default
-      const hash = hashSync(DEFAULT_PIN, BCRYPT_ROUNDS);
+      const hash = await hashPin(DEFAULT_PIN);
       try {
         await SecureStore.setItemAsync(ADMIN_PIN_KEY, hash);
       } catch {
@@ -165,7 +177,14 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
       storedHash = hash;
     }
 
-    const match = compareSync(pin, storedHash);
+    let match = false;
+    if (isLegacyBcryptHash(storedHash)) {
+      const { compareSync } = await import('bcryptjs');
+      match = compareSync(pin, storedHash);
+    } else {
+      const candidate = await hashPin(pin);
+      match = candidate === storedHash;
+    }
 
     if (match) {
       set({
@@ -201,11 +220,24 @@ export const useAdminStore = create<AdminStore>((set, get) => ({
       storedHash = await AsyncStorage.getItem(ADMIN_PIN_KEY);
     }
 
-    if (!storedHash || !compareSync(currentPin, storedHash)) {
+    if (!storedHash) {
       return false;
     }
 
-    const newHash = hashSync(newPin, BCRYPT_ROUNDS);
+    let currentMatches = false;
+    if (isLegacyBcryptHash(storedHash)) {
+      const { compareSync } = await import('bcryptjs');
+      currentMatches = compareSync(currentPin, storedHash);
+    } else {
+      const currentHash = await hashPin(currentPin);
+      currentMatches = currentHash === storedHash;
+    }
+
+    if (!currentMatches) {
+      return false;
+    }
+
+    const newHash = await hashPin(newPin);
     try {
       await SecureStore.setItemAsync(ADMIN_PIN_KEY, newHash);
     } catch {
