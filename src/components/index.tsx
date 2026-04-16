@@ -38,6 +38,7 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
   const [suggestions, setSuggestions] = useState<Stop[]>([]);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<TextInput>(null);
+  const selectingRef = useRef(false);
   const lang = useAppStore(s => s.language);
   const colors = useThemeColors();
 
@@ -89,9 +90,13 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
           onChangeText={handleChangeText}
           onFocus={() => setIsFocused(true)}
           onBlur={() => {
-            // Delay hiding suggestions so that a tap or scroll on a suggestion can register
-            // Increased timeout to 500ms to allow smooth scrolling on slower devices
-            setTimeout(() => setIsFocused(false), 500);
+            // Keep list open while a suggestion tap is in progress.
+            setTimeout(() => {
+              if (!selectingRef.current) {
+                setIsFocused(false);
+              }
+              selectingRef.current = false;
+            }, 150);
           }}
           autoFocus={autoFocus}
         />
@@ -100,12 +105,7 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
         )}
       </View>
       {isFocused && suggestions.length > 0 && (
-        <View 
-          style={[styles.suggestionsList, { backgroundColor: colors.surface, borderColor: colors.divider }]}
-          // On Android, absolute views outside their parents aren't always touchable.
-          // This ensures the container captures touches before the parent ScrollView.
-          onStartShouldSetResponderCapture={() => true}
-        >
+        <View style={[styles.suggestionsList, { backgroundColor: colors.surface, borderColor: colors.divider }]}>
           <ScrollView
             keyboardShouldPersistTaps="always"
             nestedScrollEnabled={true}
@@ -119,6 +119,9 @@ export function StopAutocomplete({ placeholder, stops, selectedStop, onSelect, s
                   styles.suggestionItem, 
                   idx < suggestions.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.divider }
                 ]}
+                onPressIn={() => {
+                  selectingRef.current = true;
+                }}
                 onPress={() => handleSelect(stop)}
               >
                 <Text style={[styles.suggestionName, { color: colors.text }]}>{getStopName(stop, lang)}</Text>
