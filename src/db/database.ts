@@ -6,6 +6,7 @@ import * as SQLite from 'expo-sqlite';
 import type { Stop, Bus, Route, SearchResult } from '../types';
 import { parseStopsOrder, routeMatchesStops, getIntermediateStopIds } from '../utils';
 import { FARE_PER_KM, MIN_FARE } from '../constants';
+import { getStopCoordinates } from './stopCoordinates';
 
 let db: SQLite.SQLiteDatabase | null = null;
 
@@ -88,15 +89,16 @@ export async function initializeDatabase(): Promise<void> {
       );
       const busId = busResult.lastInsertRowId;
 
-      // 2. Insert/Get Stops for this bus
+      // 2. Insert/Get Stops for this bus (with real coordinates)
       const stopIds: number[] = [];
       for (const stopObj of (template as any).stops) {
           const sName = stopObj.name_en;
           const norm = normalizeName(sName);
           if (!stopMap[norm]) {
+             const coord = getStopCoordinates(sName);
              const res = await database.runAsync(
-               'INSERT INTO stops (name_en, name_bn, area) VALUES (?, ?, ?)',
-               [sName, stopObj.name_bn || sName, stopObj.area || 'Unknown']
+               'INSERT INTO stops (name_en, name_bn, area, lat, lng) VALUES (?, ?, ?, ?, ?)',
+               [sName, stopObj.name_bn || sName, stopObj.area || 'Unknown', coord?.lat ?? 0, coord?.lng ?? 0]
              );
              stopMap[norm] = res.lastInsertRowId;
           }

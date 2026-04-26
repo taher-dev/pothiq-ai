@@ -33,6 +33,7 @@
     "react": "19.2.0",
     "react-native": "0.83.4",
     "react-native-gesture-handler": "^2.30.0",
+    "react-native-maps": "^1.27.2",
     "react-native-pager-view": "^8.0.0",
     "react-native-paper": "^5.15.0",
     "react-native-reanimated": "4.2.1",
@@ -40,6 +41,7 @@
     "react-native-screens": "~4.23.0",
     "react-native-toast-message": "^2.3.3",
     "react-native-vector-icons": "^10.3.0",
+    "react-native-webview": "13.16.0",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

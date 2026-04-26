@@ -21,6 +21,7 @@ import { COLORS, ENGLISH_LABELS, BENGALI_LABELS } from '../constants';
 import { getStopName, formatFare, calcDistanceFare, formatDistance } from '../utils';
 import type { Stop, SearchResult } from '../types';
 export { ChatWidget } from './ChatWidget';
+export { RouteMap } from './RouteMap';
 
 // ==================== STOP AUTOCOMPLETE ====================
 

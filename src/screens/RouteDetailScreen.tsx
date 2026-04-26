@@ -2,11 +2,11 @@
 // Pothiq AI — Route Detail Screen
 // ============================================
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Card, Chip, Divider } from 'react-native-paper';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { useThemeColors } from '../components';
+import { RouteMap, useThemeColors } from '../components';
 import { useAppStore } from '../store';
 import { COLORS, ENGLISH_LABELS, BENGALI_LABELS } from '../constants';
 import { getStopName, formatFare, calcDistanceFare, formatDistance, parseStopsOrder } from '../utils';
@@ -94,6 +94,19 @@ export default function RouteDetailScreen() {
     }
   };
 
+  const mapStops = useMemo(() => {
+    if (allStops.length < 2 || !calcFrom || !calcTo) return allStops;
+    const fromIdx = allStops.findIndex(s => s.id === calcFrom.id);
+    const toIdx = allStops.findIndex(s => s.id === calcTo.id);
+    if (fromIdx === -1 || toIdx === -1) return allStops;
+    if (fromIdx <= toIdx) return allStops.slice(fromIdx, toIdx + 1);
+    return allStops.slice(toIdx, fromIdx + 1).reverse();
+  }, [allStops, calcFrom, calcTo]);
+  const displayFare = segmentData?.fare || routeData?.fixed_fare || 0;
+  const displayDist = segmentData?.distance || routeData?.distance_km || 0;
+  const operatingHours = lang === 'bn' ? '০৬:০০ - ২৩:০০' : '06:00 - 23:00';
+  const mapDistance = calcResult?.distance || displayDist;
+
   if (loading || !routeData || !bus) {
     return (
       <View style={[styles.container, { backgroundColor: colors.bg }]}>
@@ -104,9 +117,6 @@ export default function RouteDetailScreen() {
       </View>
     );
   }
-
-  const displayFare = segmentData?.fare || routeData.fixed_fare;
-  const displayDist = segmentData?.distance || routeData.distance_km;
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.bg }]}>
@@ -149,6 +159,14 @@ export default function RouteDetailScreen() {
           </View>
         </Card.Content>
       </Card>
+
+      <RouteMap
+        stops={mapStops}
+        distanceKm={mapDistance}
+        serviceType={bus.type || (lang === 'bn' ? 'সেমি-সিটিং' : 'Semi-Seating')}
+        operatingHours={operatingHours}
+        routeKey={`${routeData.id}-${bus.id}-${bus.name}`}
+      />
 
       {/* Full stop sequence */}
       <Card style={[styles.stopsCard, { backgroundColor: colors.card }]} mode="elevated">
