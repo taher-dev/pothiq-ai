@@ -46,7 +46,6 @@ export default function AdminDashboardScreen() {
     { icon: '🛣️', label: labels.manageRoutes, screen: 'ManageRoutes' as const },
     { icon: '🚌', label: labels.manageBuses, screen: 'ManageBuses' as const },
     { icon: '📍', label: labels.manageStops, screen: 'ManageStops' as const },
-    { icon: '📤', label: labels.bulkImport, screen: 'BulkImport' as const },
     { icon: '🔑', label: labels.changePin, screen: 'ChangePin' as const },
   ];
 

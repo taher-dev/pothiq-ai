@@ -20,7 +20,7 @@ import AdminLoginScreen from '../screens/AdminLoginScreen';
 import AdminDashboardScreen from '../screens/AdminDashboardScreen';
 import { ManageRoutesScreen, ManageBusesScreen, ManageStopsScreen } from '../screens/ManageScreens';
 import { RouteFormScreen, BusFormScreen, StopFormScreen } from '../screens/FormScreens';
-import { BulkImportScreen, ChangePinScreen } from '../screens/AdminUtilScreens';
+import { ChangePinScreen } from '../screens/AdminUtilScreens';
 
 import type { RootTabParamList, HomeStackParamList, RoutesStackParamList, SettingsStackParamList } from '../types';
 
@@ -166,11 +166,7 @@ function SettingsStackNavigator() {
             component={StopFormScreen}
             options={{ headerShown: true, title: 'Stop Form', ...defaultScreenOpts }}
           />
-          <SettingsStackNav.Screen
-            name="BulkImport"
-            component={BulkImportScreen}
-            options={{ headerShown: true, title: 'Bulk Import', ...defaultScreenOpts }}
-          />
+
 
           <SettingsStackNav.Screen
             name="ChangePin"
