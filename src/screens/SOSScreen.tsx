@@ -15,6 +15,7 @@ import {
   Platform,
 } from 'react-native';
 import { Text, Card, IconButton, Button, Avatar, Surface, Divider } from 'react-native-paper';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import * as SMS from 'expo-sms';
@@ -201,10 +202,13 @@ export default function SOSScreen() {
               keyboardType="phone-pad"
             />
             <IconButton 
-                icon="plus" 
+                icon={({ size, color }) => (
+                  <MaterialCommunityIcons name="content-save" size={size || 22} color={color} />
+                )} 
                 mode="contained" 
                 containerColor={COLORS.primary} 
                 iconColor="#fff"
+                size={22}
                 onPress={addContact} 
             />
           </View>
@@ -217,11 +221,19 @@ export default function SOSScreen() {
             contacts.map((contact, index) => (
               <View key={index} style={styles.contactRow}>
                 <View style={styles.contactInfo}>
-                  <Avatar.Icon size={34} icon="phone" style={{ backgroundColor: COLORS.success }} />
+                  <Avatar.Icon 
+                    size={34} 
+                    icon={({ size, color }) => (
+                      <MaterialCommunityIcons name="phone" size={size || 18} color={color} />
+                    )} 
+                    style={{ backgroundColor: COLORS.success }} 
+                  />
                   <Text style={[styles.contactNumber, { color: colors.text }]}>{contact}</Text>
                 </View>
                 <IconButton 
-                    icon="delete-outline" 
+                    icon={({ size, color }) => (
+                      <MaterialCommunityIcons name="trash-can-outline" size={size || 22} color={color} />
+                    )} 
                     iconColor={COLORS.error} 
                     onPress={() => removeContact(contact)} 
                 />
