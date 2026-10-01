@@ -18,7 +18,7 @@
 
 | Smart Route Search | Live Route Visualization & Map | Transit Network Explorer |
 | :---: | :---: | :---: |
-| <img src="./docs/screenshots/mockup1.png" width="260" alt="Smart Bus Search Screen" /> | <img src="./docs/screenshots/mockup2.png" width="260" alt="Interactive Route Map Screen" /> | <img src="./docs/screenshots/mockup3.png" width="260" alt="Transit Routes Explorer Screen" /> |
+| <img src="./docs/screenshots/mockup1.webp" width="260" alt="Smart Bus Search Screen" /> | <img src="./docs/screenshots/mockup2.webp" width="260" alt="Interactive Route Map Screen" /> | <img src="./docs/screenshots/mockup3.webp" width="260" alt="Transit Routes Explorer Screen" /> |
 | Dual autocomplete search with fuzzy matching & dynamic fare comparisons | Turn-by-turn stop sequence, OSM map visualization & travel time estimates | Searchable directory of all Dhaka bus operators, lines, and terminal stops |
 
 <br/>
@@ -27,7 +27,7 @@
 
 | Pothiq AI Assistant | Emergency SOS & Safety | Settings & Localization | Admin Control Center |
 | :---: | :---: | :---: | :---: |
-| <img src="./docs/screenshots/mockup4.png" width="200" alt="Pothiq AI Assistant Chat Screen" /> | <img src="./docs/screenshots/mockup5.png" width="200" alt="Emergency Assistance SOS Screen" /> | <img src="./docs/screenshots/mockup6.png" width="200" alt="Settings & Dark Mode Screen" /> | <img src="./docs/screenshots/mockup7.png" width="200" alt="Admin Dashboard Screen" /> |
+| <img src="./docs/screenshots/mockup4.webp" width="200" alt="Pothiq AI Assistant Chat Screen" /> | <img src="./docs/screenshots/mockup5.webp" width="200" alt="Emergency Assistance SOS Screen" /> | <img src="./docs/screenshots/mockup6.webp" width="200" alt="Settings & Dark Mode Screen" /> | <img src="./docs/screenshots/mockup7.webp" width="200" alt="Admin Dashboard Screen" /> |
 | Conversational route & fare inquiries right from the bottom sheet | One-tap emergency broadcast with real-time GPS coordinates via SMS | Seamless English/বাংলা language toggle & Light/Dark theme switching | Real-time transit database metrics and full CRUD management |
 
 </div>
